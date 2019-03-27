@@ -21,7 +21,7 @@ public class GoogleSearchResultsPage extends BasePage {
             driver.findElements(resultsLinks).get(0).click();
 
         } catch (Exception ex){
-            Log.error(ex.getMessage());
+            report.log(ex.getMessage());
         }
 
         return new HomePage(driver);
@@ -35,7 +35,7 @@ public class GoogleSearchResultsPage extends BasePage {
 
         String title = driver.findElement(firstResTitle).getText();
 
-        Log.info("First title: " + title);
+        report.log("First title: " + title);
 
         return title;
     }
@@ -44,7 +44,7 @@ public class GoogleSearchResultsPage extends BasePage {
 
         String link = driver.findElements(resultsLinks).get(0).getText();
 
-        Log.info("First link: " + link);
+        report.log("First link: " + link);
 
         return link;
     }

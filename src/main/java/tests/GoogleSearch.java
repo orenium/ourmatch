@@ -1,6 +1,5 @@
 package tests;
 
-import infra.pages.BasePage;
 import infra.pages.GoogleHomePage;
 import infra.pages.GoogleSearchResultsPage;
 import infra.pages.HomePage;
@@ -8,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class GoogleSearch extends AbstractTest {
+public class GoogleSearch extends BaseTest {
 
     private GoogleSearchResultsPage resultsPage = null;
     private HomePage homePage = null;
@@ -40,5 +39,9 @@ public class GoogleSearch extends AbstractTest {
 
     }
 
+    @Test(priority = 3)
+    public void closeCoockiesDialog() {
+        homePage.closeAcceptCookiesDialog();
+    }
 
 }

@@ -4,7 +4,7 @@ import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class LinksValidationTest extends AbstractTest {
+public class LinksValidationTest extends BaseTest {
 
     @Test(priority = 1)
     public void validateLeaguesLinks() {
@@ -13,8 +13,9 @@ public class LinksValidationTest extends AbstractTest {
 
         Assert.assertTrue(homePage.mainLeaguesLinksValidation(homePage.getLeaguesAndCountriesMap()),
                 "leagues links validation failed");
-
     }
+
+
 
 
 }

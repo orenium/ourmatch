@@ -24,7 +24,7 @@ public class GoogleHomePage extends BasePage {
             searchBox.sendKeys(Keys.ENTER);
 
         } catch (Exception ex){
-            Log.error(ex.getMessage());
+            report.log(ex.getMessage());
         }
 
         return new GoogleSearchResultsPage(driver);
