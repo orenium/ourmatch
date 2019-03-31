@@ -9,24 +9,28 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
+import utils.ActionBot;
 import utils.WebDriverFacrory;
+
+import java.util.Random;
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)
 public abstract class BaseTest {
 
-    protected ReportDispatcher report = ReportManager.getInstance();
+    protected ReportDispatcher report;
 
-    protected WebDriver driver;
-    protected String siteUrl = "https://ourmatch.net/videos/";
+    protected static WebDriver driver;
+    protected static String siteUrl = "https://ourmatch.net/videos/";
 
     // Run before ALL tests!
     @BeforeClass
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/chromedriver");
         if (driver == null) {
-            driver = WebDriverFacrory.getDriver(Browsers.ChROME);
+            driver = WebDriverFacrory.getDriver(Browsers.CHROME);
+            driver.manage().window().maximize();
         }
-        driver.manage().window().maximize();
+        report = ReportManager.getInstance();
     }
 
 
@@ -36,9 +40,13 @@ public abstract class BaseTest {
 //        driver.close();
     }
 
-    public HomePage navigateToHomePage(){
-        driver.get(siteUrl);
-        return  new HomePage(driver);
+    public static HomePage navigateToHomePage(){
+        ActionBot.navigateToURL(siteUrl);
+        return new HomePage(driver);
+    }
+
+    public static WebDriver getDriver() {
+        return driver;
     }
 
 

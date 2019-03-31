@@ -2,7 +2,7 @@ package infra.pages;
 
 public enum Browsers {
 
-    ChROME,
-    FIREFOXX,
+    CHROME,
+    FIREFOX,
     SAFARI
 }

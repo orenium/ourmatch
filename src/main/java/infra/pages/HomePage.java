@@ -1,9 +1,9 @@
 package infra.pages;
 
-import com.esotericsoftware.minlog.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import utils.ActionBot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
         super(driver);
-        setLeaguesMap();
+//        setLeaguesMap();
     }
 
     public boolean mainLeaguesLinksValidation(HashMap<String, String> leaguesAndLinks) {
@@ -27,8 +27,8 @@ public class HomePage extends BasePage {
         int validLinks = 0;
 
         try {
-            leaguesTitlesList = actionBot.getAllElements(leaguesTitles);
-            leaguesLinksList = actionBot.getAllElements(leaguesLinks);
+            leaguesTitlesList = ActionBot.getAllElements(leaguesTitles);
+            leaguesLinksList = ActionBot.getAllElements(leaguesLinks);
 
             for (int i = 0; i < leaguesAndLinks.size(); i++) {
 
@@ -49,47 +49,64 @@ public class HomePage extends BasePage {
             }
 
         } catch (Exception ex) {
-             report.log(ex.getMessage());
+            report.log(ex.getMessage());
         }
         return isValid;
     }
 
 
-    public void search(String searchTerm) {
-
+    public boolean search(String searchTerm) {
         By searchInput = By.cssSelector("input.search-text");
         By searchBtn = By.className("search-submit");
 
-        actionBot.writeToElement(searchInput, searchTerm);
-        actionBot.clickOnElement(searchBtn);
+        ActionBot.writeToElement(searchInput, searchTerm);
+        ActionBot.clickOnElement(searchBtn, "searchBtn");
+        System.out.println("getCurrentUrl: "+ driver.getCurrentUrl());
 
+        return validateSearchInURL(searchTerm);
     }
 
+    public HashMap getLeaguesAndCountriesMap() {
 
-    public boolean closeAcceptCookiesDialog() {
-        By container = By.cssSelector("div.cc-window.cc-banner.cc-type-info.cc-theme-edgeless.cc-bottom.cc-color-override-1861914146");
-        By acceptAndCloseBtn = By.cssSelector("div.cc-window.cc-banner.cc-type-info.cc-theme-edgeless.cc-bottom.cc-color-override-1861914146 div.cc-compliance a");
-
-        boolean isClosed = false;
-
-        try {
-            if (actionBot.isElementDisplayed(container)) {
-                actionBot.clickOnElement(acceptAndCloseBtn);
-
-            } else {
-                actionBot.waitForElementToBeDisplayed(container);
-                actionBot.clickOnElement(acceptAndCloseBtn);
-            }
-
-            if (!actionBot.isElementDisplayed(container)) {
-                report.log("AcceptCookiesDialog was closed");
-                isClosed = true;
-
-            }
-        } catch (Exception ex) {
-            report.log("Unable to find closeAcceptCookiesDialog: " + ex.getMessage());
+        if (leaguesAndLinksMap != null) {
+            return leaguesAndLinksMap;
+        } else {
+            report.log("Unable to get leaguesAndCountriesMap");
+            return null;
         }
-
-        return isClosed;
     }
+
+    private boolean validateSearchInURL(String searchTerm) {
+
+        boolean isValid = false;
+
+        String url = driver.getCurrentUrl();
+        if (url.contains(searchTerm)) {
+            report.log("url contains search term" + searchTerm);
+            isValid = true;
+        } else {
+            if (searchTerm.length() > 0) {
+                String[] splited = searchTerm.split(" ");
+                for (String singleWord : splited) {
+                    if (url.contains(singleWord)) {
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                    }
+                }
+            }
+        }
+        if (isValid){
+            report.log("The search term '" + searchTerm + "' is shown at the url ");
+        }
+        return isValid;
+    }
+
+    public GamePage selectRandomItem() {
+        By videosOnPage = By.cssSelector(".vidthumb");
+        ActionBot.selectRandomItem(videosOnPage);
+        return new GamePage(driver);
+    }
+
+
 }

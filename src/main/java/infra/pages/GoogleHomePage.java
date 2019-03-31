@@ -1,10 +1,8 @@
 package infra.pages;
 
-import com.esotericsoftware.minlog.Log;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import utils.ActionBot;
 
 public class GoogleHomePage extends BasePage {
 
@@ -17,15 +15,11 @@ public class GoogleHomePage extends BasePage {
     }
 
     public GoogleSearchResultsPage runGoogleSearch(String searchTerm) {
-        driver.get(HOMEPAGE_URL);
-        try {
-            WebElement searchBox = driver.findElement(searchBoxSelector);
-            searchBox.sendKeys(searchTerm);
-            searchBox.sendKeys(Keys.ENTER);
+        ActionBot.navigateToURL(HOMEPAGE_URL);
 
-        } catch (Exception ex){
-            report.log(ex.getMessage());
-        }
+        ActionBot.clickOnElement(searchBoxSelector, "Search Box");
+        ActionBot.writeToElement(searchBoxSelector, searchTerm);
+        ActionBot.clickEnterToSearch(searchBoxSelector);
 
         return new GoogleSearchResultsPage(driver);
     }

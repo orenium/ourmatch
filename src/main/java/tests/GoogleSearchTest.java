@@ -7,13 +7,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class GoogleSearch extends BaseTest {
+public class GoogleSearchTest extends BaseTest {
 
     private GoogleSearchResultsPage resultsPage = null;
     private HomePage homePage = null;
 
     @Test(priority = 1)
-    public void a_verifyShowsInGoogleResults() {
+    public void verifyShowsInGoogleResults() {
 
         String searchTerm = "ourmatch";
         String siteUrl = "https://ourmatch.net/videos/";
@@ -31,7 +31,7 @@ public class GoogleSearch extends BaseTest {
     }
 
     @Test(priority = 2)
-    public void b_verifyLinkIsValid() {
+    public void verifyLinkIsValid() {
 
         homePage = resultsPage.clickFirstLink();
 
@@ -40,8 +40,8 @@ public class GoogleSearch extends BaseTest {
     }
 
     @Test(priority = 3)
-    public void closeCoockiesDialog() {
-        homePage.closeAcceptCookiesDialog();
+    public void closeCookiesDialog() {
+        Assert.assertTrue(homePage.closeAcceptCookiesDialog(), "Fail to close cookies dialog");
     }
 
 }

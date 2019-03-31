@@ -16,18 +16,17 @@ public class WebDriverFacrory {
     public static WebDriver getDriver(Browsers browser) {
 
         switch (browser) {
-            case ChROME:
+            case CHROME:
                 System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/chromedriver");
                 driver = new ChromeDriver();
                 break;
-            case FIREFOXX:
+            case FIREFOX:
                 System.setProperty("webdriver.gecko.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/geckodriver");
                 driver = new FirefoxDriver();
                 break;
             case SAFARI:
                 driver = new SafariDriver();
                 break;
-
         }
         return driver;
     }

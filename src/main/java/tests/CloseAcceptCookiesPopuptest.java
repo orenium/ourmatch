@@ -4,7 +4,7 @@ import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CloseAcceptCookiesPopup extends BaseTest {
+public class CloseAcceptCookiesPopuptest extends BaseTest {
 
     @Test
     public void CloseAcceptCookiesPopup(){
