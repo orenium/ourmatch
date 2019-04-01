@@ -12,16 +12,22 @@ public class PlayHighlightsTest extends BaseTest {
     GamePage gamePage;
 
 
-    @Test(priority = 1)
+    @Test(priority = 2)
     public void playRandomHighLights() {
-        homePage = navigateToHomePage();
-        homePage.closeAcceptCookiesDialog();
-        gamePage = homePage.selectRandomItem();
-        gamePage.playHighlights();
+        // TODO: add assertion in page
+        if (gamePage != null) {
+            gamePage = homePage.selectRandomItem();
+            gamePage.playHighlights();
+        } else {
+            homePage = navigateToHomePage();
+            homePage.closeAcceptCookiesDialog();
+            gamePage = homePage.selectRandomItem();
+            gamePage.playHighlights();
+        }
     }
 
 
-    @Test(priority = 2)
+    @Test(priority = 1)
     public void toggleMatchScore() {
         if (gamePage != null) {
             Assert.assertTrue(gamePage.toggleMatchScore());

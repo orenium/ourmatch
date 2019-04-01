@@ -3,9 +3,7 @@ package utils;
 
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
-import infra.pages.Browsers;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -133,7 +131,6 @@ public class ActionBot {
 
     public static void moveToElement(By byLocator) {
         WebElement webElement = driver.findElement(byLocator);
-
         try {
             action.moveToElement(webElement).perform();
             wait.until(ExpectedConditions.visibilityOf(webElement));
@@ -170,12 +167,12 @@ public class ActionBot {
         return text;
     }
 
-    public static List<String> getTextFromElementList(By listLocator){
+    public static List<String> getTextFromElementList(By listLocator) {
         List<WebElement> elements = driver.findElements(listLocator);
         List<String> list = null;
-        if (elements.size() > 0){
+        if (elements.size() > 0) {
             list = new ArrayList();
-            for (WebElement element: elements){
+            for (WebElement element : elements) {
                 list.add(element.getText());
                 report.log(element.getText());
             }
@@ -208,5 +205,35 @@ public class ActionBot {
         WebElement element = driver.findElement(byLocator);
         action.doubleClick(element).perform();
     }
+
+    private static void switchToIFrameDriver(By iFrameLocator) {
+        WebElement iFrame = driver.findElement(iFrameLocator);
+        driver.switchTo().frame(iFrame);
+    }
+
+    private static void switchToDefaultContent() {
+        driver.switchTo().defaultContent();
+    }
+
+    public static void moveToElementInIFrame(By iFrameLocator, By elementInIFrame) {
+        switchToIFrameDriver(iFrameLocator);
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(elementInIFrame)));
+        action.moveToElement(driver.findElement(elementInIFrame)).perform();
+        switchToDefaultContent();
+    }
+
+    public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame) {
+        switchToIFrameDriver(iFrameLocator);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
+        switchToDefaultContent();
+    }
+
+    public static String getTextFromElementInIFrame(By iFrameLocator, By elementInIFrame) {
+        switchToIFrameDriver(iFrameLocator);
+        String text = wait.until(ExpectedConditions.visibilityOf(driver.findElement(elementInIFrame))).getText();
+        switchToDefaultContent();
+        return text;
+    }
+
 
 }

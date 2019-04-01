@@ -17,6 +17,7 @@ public class GamePage extends BasePage {
     By embededCodeDiv = By.cssSelector("div.embed-code");
     By matchTeams = By.cssSelector("div.match_team_header.clearfix h2");
     By spoilerDiv = By.cssSelector("div.vs.spoiler");
+    By fullScreenBtn = By.cssSelector("div.rmp-fullscreen.rmp-i.rmp-i-resize-full");
 
 
     public GamePage(WebDriver driver) {
@@ -26,36 +27,33 @@ public class GamePage extends BasePage {
 
 
     public void playHighlights() {
-// TODO: test fail for now
         ActionBot.moveToElement(embededCodeDiv);
         ActionBot.clickOnElement(embededCodeDiv, "embededCodeDiv");
 
         if (ActionBot.isElementDisplayed(iframe)) {
             report.log("iframe src: " + ActionBot.getElementAttribute(iframe, "src"));
-            ActionBot.clickOnElement(iframe, "iframe");
             openVideoFullScreen(iframe);
-
         }
     }
 
+
     public void closePopup() {
 
-        try {
-            ActionBot.waitForElementToBeDisplayed(closePopupBtb);
-            ActionBot.clickOnElement(closePopupBtb, "close popup btn");
-            driver.close();
-        } catch (org.openqa.selenium.TimeoutException ex) {
-            System.out.println("TimeoutException");
-            ActionBot.clickOnIFrameElement(iframe, closePopupBtb, "closePopupBtn");
+        ActionBot.clickOnElementInIFrame(iframe, closePopupBtb);
+//        try {
+//        } catch (org.openqa.selenium.TimeoutException ex) {
+//            System.out.println("TimeoutException");
+//            ActionBot.clickOnIFrameElement(iframe, closePopupBtb, "closePopupBtn");
 //            ActionBot.moveToElement(closePopupBtb);
 //            ActionBot.clickOnElement(closePopupBtb, "close popup btn");
 //            ActionBot.clickOnElement(closeButtonContainer, "close popup btn");
-        }
+//        }
     }
 
 
     public void openVideoFullScreen(By byLocator) {
-        ActionBot.doubleClick(byLocator);
+        ActionBot.clickOnElementInIFrame(iframe, fullScreenBtn);
+        report.log("switching to full screen");
     }
 
     public void getMatchTeams() {
@@ -74,7 +72,7 @@ public class GamePage extends BasePage {
         ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
         ActionBot.waitForElementToBeDisplayed(spoilerDiv);
         String vsText = ActionBot.getElementText(spoilerDiv);
-        if (vsText.equals("FT")){
+        if (vsText.equals("FT")) {
             isScoreShown = true;
         }
         return isScoreShown;
