@@ -54,18 +54,14 @@ public abstract class BasePage {
 
         try {
             if (ActionBot.isElementDisplayed(container)) {
-                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close Btn");
+                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close button");
                 isClosed = true;
 
             } else {
                 ActionBot.waitForElementToBeDisplayed(container);
-                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close Btn");
+                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close button");
                 isClosed = true;
             }
-
-//            if (!actionBot.isElementDisplayed(container)) {
-//                report.log("AcceptCookiesDialog was closed");
-//            }
         } catch (Exception ex) {
             report.log("Unable to find closeAcceptCookiesDialog: " + ex.getMessage());
         }

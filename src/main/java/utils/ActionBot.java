@@ -1,6 +1,5 @@
 package utils;
 
-
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
 import org.openqa.selenium.*;
@@ -23,7 +22,7 @@ public class ActionBot {
     private static Random random = new Random();
     private static WebDriver driver = BaseTest.getDriver();
     public static Actions action = new Actions(driver);
-    private static WebDriverWait wait = new WebDriverWait(driver, 10);
+    private static WebDriverWait wait = new WebDriverWait(driver, MainConfig.webDriverImplicitWaitInSeconds);
 
     public ActionBot() {
     }
@@ -144,7 +143,7 @@ public class ActionBot {
         action.moveToElement(webElement).perform();
     }
 
-    public void executeJavaScript(String javaScript, WebElement element) {
+    public static void executeJavaScript(String javaScript, WebElement element) {
 
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
@@ -154,6 +153,13 @@ public class ActionBot {
             jsExecutor.executeScript(javaScript);
         }
     }
+
+    public static WebElement getParentElement(By childLocator) {
+        WebElement childElement = driver.findElement(childLocator);
+        WebElement parent = childElement.findElement(By.xpath(".."));
+        return parent;
+    }
+
 
     public static String getElementText(By byLocator) {
         String text = "";
@@ -166,6 +172,20 @@ public class ActionBot {
         }
         return text;
     }
+
+    public static String getElementText(WebElement element) {
+        String text = "";
+        try {
+            if (element.isDisplayed()) {
+                text = element.getText();
+            }
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            report.log("Couldn't find element element text, returning empty string..");
+        }
+        return text;
+    }
+
+
 
     public static List<String> getTextFromElementList(By listLocator) {
         List<WebElement> elements = driver.findElements(listLocator);
@@ -225,6 +245,7 @@ public class ActionBot {
     public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame) {
         switchToIFrameDriver(iFrameLocator);
         wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
+        report.log("element inside iframe was clicked");
         switchToDefaultContent();
     }
 
@@ -233,6 +254,10 @@ public class ActionBot {
         String text = wait.until(ExpectedConditions.visibilityOf(driver.findElement(elementInIFrame))).getText();
         switchToDefaultContent();
         return text;
+    }
+
+    public static int getRandomIndex(int listSize) {
+        return random.nextInt(listSize);
     }
 
 

@@ -7,12 +7,15 @@ import utils.ActionBot;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class HomePage extends BasePage {
 
+    public static List<WebElement> iframes;
+
     public HomePage(WebDriver driver) {
         super(driver);
-//        setLeaguesMap();
+        closeAcceptCookiesDialog();
     }
 
     public boolean mainLeaguesLinksValidation(HashMap<String, String> leaguesAndLinks) {
@@ -61,7 +64,7 @@ public class HomePage extends BasePage {
 
         ActionBot.writeToElement(searchInput, searchTerm);
         ActionBot.clickOnElement(searchBtn, "searchBtn");
-        System.out.println("getCurrentUrl: "+ driver.getCurrentUrl());
+        report.log("Current Url: " + driver.getCurrentUrl());
 
         return validateSearchInURL(searchTerm);
     }
@@ -82,7 +85,6 @@ public class HomePage extends BasePage {
 
         String url = driver.getCurrentUrl();
         if (url.contains(searchTerm)) {
-            report.log("url contains search term" + searchTerm);
             isValid = true;
         } else {
             if (searchTerm.length() > 0) {
@@ -96,7 +98,7 @@ public class HomePage extends BasePage {
                 }
             }
         }
-        if (isValid){
+        if (isValid) {
             report.log("The search term '" + searchTerm + "' is shown at the url ");
         }
         return isValid;
@@ -106,6 +108,44 @@ public class HomePage extends BasePage {
         By videosOnPage = By.cssSelector(".vidthumb");
         ActionBot.selectRandomItem(videosOnPage);
         return new GamePage(driver);
+    }
+
+    public void getViewsData() {
+        By viewsLocator = By.cssSelector("span.views i.count");
+        List<String> viewsValues = ActionBot.getTextFromElementList(viewsLocator);
+
+        try {
+            for (String val : viewsValues) {
+                if (val.contains("K")) {
+                    val.replace("k", "");
+                    val = val.replace("k", "");
+                    long num = Long.parseLong(val);
+                }
+                System.out.println("val: " + val);
+            }
+        } catch (java.lang.NumberFormatException ex) {
+            System.out.println("NumberFormatException");
+        }
+    }
+
+
+    public TwitterPopUpPage followOnTwitter() {
+        ActionBot.clickOnElementInIFrame(By.cssSelector("div#header iframe[src*='twitter']"), By.cssSelector("a#follow-button"));
+        String mainPage = driver.getWindowHandle();
+        Set<String> windows = driver.getWindowHandles();
+        for (String window : windows) {
+            System.out.println(window);
+            if (!window.equals(mainPage)) {
+                driver.switchTo().window(window);
+                break;
+            }
+        }
+        By test = By.cssSelector("div#bd");
+        System.out.println(ActionBot.isElementDisplayed(test));
+        System.out.println(driver.getCurrentUrl());
+        System.out.println(driver.getTitle());
+
+        return new TwitterPopUpPage(driver);
     }
 
 

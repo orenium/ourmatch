@@ -3,16 +3,17 @@ package tests;
 
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
-import infra.pages.Browsers;
 import infra.pages.HomePage;
+import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import utils.ActionBot;
+import utils.MainConfig;
 import utils.WebDriverFacrory;
 
-import java.util.Random;
+import java.io.IOException;
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)
 public abstract class BaseTest {
@@ -24,10 +25,12 @@ public abstract class BaseTest {
 
     // Run before ALL tests!
     @BeforeClass
-    public void setup() {
+    public void setup() throws IOException {
+        MainConfig.initFromFile("src/main/resources/config/MainConfig.properties");
+
         System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/chromedriver");
         if (driver == null) {
-            driver = WebDriverFacrory.getDriver(Browsers.CHROME);
+            driver = WebDriverFacrory.getDriver(MainConfig.webDriverType);
             driver.manage().window().maximize();
         }
         report = ReportManager.getInstance();
@@ -37,7 +40,9 @@ public abstract class BaseTest {
     // Run after ALL tests!
     @AfterClass
     public void afterAllTests() {
-//        driver.close();
+        if (MainConfig.closeBrowserAtTestEnd) {
+            driver.close();
+        }
     }
 
     public static HomePage navigateToHomePage(){
@@ -48,6 +53,7 @@ public abstract class BaseTest {
     public static WebDriver getDriver() {
         return driver;
     }
+
 
 
 }

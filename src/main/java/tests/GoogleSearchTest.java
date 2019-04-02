@@ -32,9 +32,7 @@ public class GoogleSearchTest extends BaseTest {
 
     @Test(priority = 2)
     public void verifyLinkIsValid() {
-
         homePage = resultsPage.clickFirstLink();
-
         Assert.assertNotNull(homePage, "link validation test failed");
 
     }

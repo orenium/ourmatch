@@ -4,7 +4,6 @@ import infra.pages.Browsers;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.safari.SafariDriver;
 
 public class WebDriverFacrory {
 
@@ -17,15 +16,12 @@ public class WebDriverFacrory {
 
         switch (browser) {
             case CHROME:
-                System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/resources/webdrivers/chromedriver");
                 driver = new ChromeDriver();
                 break;
             case FIREFOX:
-                System.setProperty("webdriver.gecko.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/geckodriver");
+                System.setProperty("webdriver.gecko.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/resources/webdrivers/geckodriver");
                 driver = new FirefoxDriver();
-                break;
-            case SAFARI:
-                driver = new SafariDriver();
                 break;
         }
         return driver;

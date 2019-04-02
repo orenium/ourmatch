@@ -11,6 +11,16 @@ public class PlayHighlightsTest extends BaseTest {
     HomePage homePage;
     GamePage gamePage;
 
+    @Test(priority = 1)
+    public void toggleMatchScore() {
+        if (gamePage != null) {
+            Assert.assertTrue(gamePage.toggleMatchScore());
+        } else {
+            homePage = navigateToHomePage();
+            gamePage = homePage.selectRandomItem();
+            Assert.assertTrue(gamePage.toggleMatchScore());
+        }
+    }
 
     @Test(priority = 2)
     public void playRandomHighLights() {
@@ -20,22 +30,21 @@ public class PlayHighlightsTest extends BaseTest {
             gamePage.playHighlights();
         } else {
             homePage = navigateToHomePage();
-            homePage.closeAcceptCookiesDialog();
             gamePage = homePage.selectRandomItem();
             gamePage.playHighlights();
         }
     }
 
+    @Test(priority = 3)
+    public void openVideoFullScreen() {
 
-    @Test(priority = 1)
-    public void toggleMatchScore() {
         if (gamePage != null) {
-            Assert.assertTrue(gamePage.toggleMatchScore());
+            Assert.assertTrue(gamePage.openVideoFullScreen());
         } else {
             homePage = navigateToHomePage();
-            homePage.closeAcceptCookiesDialog();
             gamePage = homePage.selectRandomItem();
-            Assert.assertTrue(gamePage.toggleMatchScore());
+            gamePage.playHighlights();
+            Assert.assertTrue(gamePage.openVideoFullScreen());
         }
     }
 }

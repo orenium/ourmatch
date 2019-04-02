@@ -8,9 +8,7 @@ public class LinksValidationTest extends BaseTest {
 
     @Test(priority = 1)
     public void validateLeaguesLinks() {
-
         HomePage homePage = navigateToHomePage();
-
         Assert.assertTrue(homePage.mainLeaguesLinksValidation(homePage.getLeaguesAndCountriesMap()),
                 "leagues links validation failed");
     }
