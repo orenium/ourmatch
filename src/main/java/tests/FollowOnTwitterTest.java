@@ -10,7 +10,7 @@ public class FollowOnTwitterTest extends BaseTest {
     TwitterPopUpPage twitterPopUpPage;
 
 
-    @Test(priority = 1)
+    @Test
     public void followOnTwitter() {
         homePage = navigateToHomePage();
         twitterPopUpPage = homePage.followOnTwitter();

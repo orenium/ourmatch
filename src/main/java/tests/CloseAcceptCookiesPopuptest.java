@@ -9,10 +9,8 @@ public class CloseAcceptCookiesPopuptest extends BaseTest {
     @Test
     public void CloseAcceptCookiesPopup(){
         HomePage homePage = navigateToHomePage();
-
         Assert.assertTrue(homePage.closeAcceptCookiesDialog(),
-                "failed to closeAcceptCoockiesPopup ");
-
+                "Fail to close cookies dialog ");
     }
 
 

@@ -12,7 +12,7 @@ public class LeaveCommentTest extends BaseTest  {
     public void leaveAComment(){
         HomePage homePage = navigateToHomePage();
         GamePage gamePage = homePage.selectRandomItem();
-        Assert.assertTrue(gamePage.leaveComment());
+        Assert.assertTrue(gamePage.leaveComment(), "Failed to leave comment");
     }
 
 }

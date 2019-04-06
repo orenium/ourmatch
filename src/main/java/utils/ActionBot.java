@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-;
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)
 public class ActionBot {
@@ -28,11 +27,23 @@ public class ActionBot {
     }
 
 
+    /**
+     * This method receive a url and open a broswer with that given url
+     *
+     * @param url - page to open
+     */
     public static void navigateToURL(String url) {
         driver.get(url);
         report.log("Navigating to: " + url);
     }
 
+
+    /**
+     * This method inserts a text to a textual webelement
+     *
+     * @param elementLocator - The locator for that webelement
+     * @param text           - The text to insert
+     */
     public static void writeToElement(By elementLocator, String text) {
         WebElement element = driver.findElement(elementLocator);
 
@@ -44,6 +55,13 @@ public class ActionBot {
         }
     }
 
+
+    /**
+     * This method click on a webelement
+     *
+     * @param elementLocator - By locator for the webelement to click on
+     * @param elementName    - Element's name (for logging)
+     */
     public static void clickOnElement(By elementLocator, String elementName) {
         WebElement element = driver.findElement(elementLocator);
 
@@ -55,16 +73,12 @@ public class ActionBot {
         }
     }
 
-    public static void clickEnterToSearch(By elementLocator) {
-        WebElement element = driver.findElement(elementLocator);
-
-        if (element.isDisplayed()) {
-            element.sendKeys(Keys.ENTER);
-        } else {
-            report.log("Element isn't display");
-        }
-    }
-
+    /**
+     * This method click on a webelement
+     *
+     * @param element     - webelement to click on
+     * @param elementName - Element's name (for logging)
+     */
     public static void clickOnElement(WebElement element, String elementName) {
         moveToElement(element);
         if (element.isDisplayed()) {
@@ -75,26 +89,37 @@ public class ActionBot {
         }
     }
 
+    /**
+     * This method clicks on ENTER for start searching after validating some element is visible
+     *
+     * @param elementLocator - The element to verify with
+     */
+    public static void clickEnterToSearch(By elementLocator) {
+        WebElement element = driver.findElement(elementLocator);
+
+        if (element.isDisplayed()) {
+            element.sendKeys(Keys.ENTER);
+        } else {
+            report.log("Element isn't display");
+        }
+    }
+
+
+    /**
+     * This method wait for an element to be display
+     *
+     * @param elementLocator - The element By locator
+     */
     public static void waitForElementToBeDisplayed(By elementLocator) {
         wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
     }
 
-    public static void clickOnIFrameElement(By iFrameLocator, By elementInIframe, String elementName) {
-
-        driver.switchTo().frame(driver.findElement(iFrameLocator));
-        WebElement element = getElement(elementInIframe);
-
-        if (element.isDisplayed()) {
-            element.click();
-            report.log("Element " + elementName + " was clicked");
-        } else {
-            report.log("Element isn't display");
-        }
-
-        driver.switchTo().defaultContent();
-    }
-
-
+    /**
+     * This mehtod checks if a certain element is displayed on not
+     *
+     * @param elementLocator - The element to check
+     * @return - True if displayed, false if not
+     */
     public static boolean isElementDisplayed(By elementLocator) {
         boolean isDisplayed = false;
 
@@ -115,6 +140,12 @@ public class ActionBot {
         return isDisplayed;
     }
 
+    /**
+     * This method return a list of webelements
+     *
+     * @param elementLocator - The elements By locator
+     * @return - A list of webelements
+     */
     public static List<WebElement> getAllElements(By elementLocator) {
 
         List<WebElement> elementsList = null;
@@ -128,6 +159,12 @@ public class ActionBot {
         return elementsList;
     }
 
+
+    /**
+     * This method moves to a given webelement
+     *
+     * @param byLocator - The element's By locator
+     */
     public static void moveToElement(By byLocator) {
         WebElement webElement = driver.findElement(byLocator);
         try {
@@ -138,22 +175,34 @@ public class ActionBot {
         }
     }
 
+    /**
+     * This method moves to a given webelement
+     *
+     * @param webElement - The element's to move to
+     */
     public static void moveToElement(WebElement webElement) {
         wait.until(ExpectedConditions.visibilityOf(webElement));
         action.moveToElement(webElement).perform();
     }
 
-    public static void executeJavaScript(String javaScript, WebElement element) {
+    /**
+     * This method runs a JavaScript script
+     *
+     * @param javaScript - The JS command to run
+     */
+    public static void executeJavaScript(String javaScript) {
 
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-
-        if (element != null) {
-            jsExecutor.executeScript(javaScript, element);
-        } else {
-            jsExecutor.executeScript(javaScript);
-        }
+        jsExecutor.executeScript(javaScript);
     }
 
+
+    /**
+     * This method gets the child element and returns the parent element
+     *
+     * @param childLocator - The By child's element locator
+     * @return - The parent (as webelement)
+     */
     public static WebElement getParentElement(By childLocator) {
         WebElement childElement = driver.findElement(childLocator);
         WebElement parent = childElement.findElement(By.xpath(".."));
@@ -161,6 +210,12 @@ public class ActionBot {
     }
 
 
+    /**
+     * This method get the text from a webelement
+     *
+     * @param byLocator - The webelement By locator
+     * @return - The element's inner text
+     */
     public static String getElementText(By byLocator) {
         String text = "";
         try {
@@ -173,6 +228,12 @@ public class ActionBot {
         return text;
     }
 
+    /**
+     * This method get the text from a webelement
+     *
+     * @param element - The webelement
+     * @return - The element's inner text
+     */
     public static String getElementText(WebElement element) {
         String text = "";
         try {
@@ -186,7 +247,12 @@ public class ActionBot {
     }
 
 
-
+    /**
+     * This method returns a list of strings from a list of webelements
+     *
+     * @param listLocator - The element's list By locator
+     * @return - List of strings from the given webelements list
+     */
     public static List<String> getTextFromElementList(By listLocator) {
         List<WebElement> elements = driver.findElements(listLocator);
         List<String> list = null;
@@ -194,12 +260,18 @@ public class ActionBot {
             list = new ArrayList();
             for (WebElement element : elements) {
                 list.add(element.getText());
-                report.log(element.getText());
+//                report.log(element.getText());
             }
         }
         return list;
     }
 
+    /**
+     * This method returns a random number from a range
+     *
+     * @param listLocator - The list of elements By locator (the list's size is the range)
+     * @return - a random number (by list size)
+     */
     public static int selectRandomItem(By listLocator) {
         int index = -1;
 
@@ -211,30 +283,57 @@ public class ActionBot {
         return index;
     }
 
+    /**
+     * This method get an attribute value from a webelement
+     * @param byLocator - The element's By locator
+     * @param attribute - The requested attribute's name
+     * @return - The attribute's value
+     */
     public static String getElementAttribute(By byLocator, String attribute) {
 
         return driver.findElement(byLocator).getAttribute(attribute);
     }
 
+    /**
+     * This method search for a webelement
+     * @param byLocator - The element's By locator
+     * @return - Webelement
+     */
     public static WebElement getElement(By byLocator) {
 
         return driver.findElement(byLocator);
     }
 
+    /**
+     * This method double clicks on a webelement
+     * @param byLocator - The element's By locator
+     */
     public static void doubleClick(By byLocator) {
         WebElement element = driver.findElement(byLocator);
         action.doubleClick(element).perform();
     }
 
+    /**
+     * This method switch the webdriver to iframe so we can find and do things on element inside
+     * @param iFrameLocator - The iframe's By locator
+     */
     private static void switchToIFrameDriver(By iFrameLocator) {
         WebElement iFrame = driver.findElement(iFrameLocator);
         driver.switchTo().frame(iFrame);
     }
 
+    /**
+     * This methods 'release the webdriver from the iframe boundaries and changed back to the default DOM driver
+     */
     private static void switchToDefaultContent() {
         driver.switchTo().defaultContent();
     }
 
+    /**
+     * This method moves to an element in an iframe
+     * @param iFrameLocator   - The iframe tag to move to
+     * @param elementInIFrame - The element to move inside the iframe
+     */
     public static void moveToElementInIFrame(By iFrameLocator, By elementInIFrame) {
         switchToIFrameDriver(iFrameLocator);
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(elementInIFrame)));
@@ -242,13 +341,26 @@ public class ActionBot {
         switchToDefaultContent();
     }
 
-    public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame) {
+    /**
+     * This method click on a webelemnt which wrapped in an iframe tag
+     *
+     * @param iFrameLocator   - The iframe tag to search in
+     * @param elementInIFrame - The element to click inside the iframe
+     * @param elementName     - Element's name (for logging)
+     */
+    public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame, String elementName) {
         switchToIFrameDriver(iFrameLocator);
         wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
-        report.log("element inside iframe was clicked");
+        report.log("element " + elementName + " (inside iframe) was clicked");
         switchToDefaultContent();
     }
 
+    /**
+     * This method get the text from an elment locatied in an iframe element
+     * @param iFrameLocator - The iframe By locator
+     * @param elementInIFrame - The element's By locator
+     * @return - The element's text
+     */
     public static String getTextFromElementInIFrame(By iFrameLocator, By elementInIFrame) {
         switchToIFrameDriver(iFrameLocator);
         String text = wait.until(ExpectedConditions.visibilityOf(driver.findElement(elementInIFrame))).getText();
@@ -256,6 +368,11 @@ public class ActionBot {
         return text;
     }
 
+    /**
+     * This method return an index as a number
+     * @param listSize - The list (for the random limits)
+     * @return - A random number
+     */
     public static int getRandomIndex(int listSize) {
         return random.nextInt(listSize);
     }

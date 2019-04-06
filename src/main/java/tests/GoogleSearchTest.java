@@ -37,9 +37,4 @@ public class GoogleSearchTest extends BaseTest {
 
     }
 
-    @Test(priority = 3)
-    public void closeCookiesDialog() {
-        Assert.assertTrue(homePage.closeAcceptCookiesDialog(), "Fail to close cookies dialog");
-    }
-
 }

@@ -134,16 +134,13 @@ public class HomePage extends BasePage {
         String mainPage = driver.getWindowHandle();
         Set<String> windows = driver.getWindowHandles();
         for (String window : windows) {
-            System.out.println(window);
             if (!window.equals(mainPage)) {
                 driver.switchTo().window(window);
                 break;
             }
         }
         By test = By.cssSelector("div#bd");
-        System.out.println(ActionBot.isElementDisplayed(test));
-        System.out.println(driver.getCurrentUrl());
-        System.out.println(driver.getTitle());
+        report.log("iframe src: "+ driver.getCurrentUrl());
 
         return new TwitterPopUpPage(driver);
     }

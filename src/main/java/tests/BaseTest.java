@@ -5,6 +5,8 @@ import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
 import infra.pages.HomePage;
 import org.junit.Before;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -13,12 +15,13 @@ import utils.ActionBot;
 import utils.MainConfig;
 import utils.WebDriverFacrory;
 
+import java.io.File;
 import java.io.IOException;
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)
 public abstract class BaseTest {
 
-    protected ReportDispatcher report;
+    protected static ReportDispatcher report;
 
     protected static WebDriver driver;
     protected static String siteUrl = "https://ourmatch.net/videos/";
@@ -39,7 +42,9 @@ public abstract class BaseTest {
 
     // Run after ALL tests!
     @AfterClass
-    public void afterAllTests() {
+    public void afterAllTests() throws Exception {
+        takeScreenShot("Browser state when test ends");
+
         if (MainConfig.closeBrowserAtTestEnd) {
             driver.close();
         }
@@ -54,6 +59,13 @@ public abstract class BaseTest {
         return driver;
     }
 
+    public static void takeScreenShot(String description) throws Exception{
+
+        if (driver != null){
+            File screenShotFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            report.addImage(screenShotFile,description);
+        }
+    }
 
 
 }
