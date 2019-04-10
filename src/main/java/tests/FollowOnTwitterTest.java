@@ -12,8 +12,22 @@ public class FollowOnTwitterTest extends BaseTest {
 
     @Test
     public void followOnTwitter() {
+
+        report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        report.endLevel();
+
+
+        report.startLevel("2. Click on the 'Follow on Twitter' button");
         twitterPopUpPage = homePage.followOnTwitter();
-        Assert.assertTrue(twitterPopUpPage.isPopupShown());
+        report.endLevel();
+
+        // Verify that the Twitter popup is shown"
+        boolean isPopupShown = twitterPopUpPage.isPopupShown();
+        Assert.assertTrue(isPopupShown, "Failed to open Twitter popup");
+
+        // Verify that the presented profile is "Ourmatch.net"
+        boolean isValidProfile = twitterPopUpPage.isValidProfile();
+        Assert.assertTrue(isValidProfile, "Failed to open Twitter popup");
     }
 }

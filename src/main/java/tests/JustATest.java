@@ -12,4 +12,5 @@ public class JustATest extends BaseTest {
         HomePage homePage = navigateToHomePage();
         homePage.getViewsData();
     }
+
 }

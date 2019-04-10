@@ -12,7 +12,7 @@ public class GoogleSearchTest extends BaseTest {
     private GoogleSearchResultsPage resultsPage = null;
     private HomePage homePage = null;
 
-    @Test(priority = 1)
+    @Test
     public void verifyShowsInGoogleResults() {
 
         String searchTerm = "ourmatch";
@@ -20,21 +20,29 @@ public class GoogleSearchTest extends BaseTest {
         String siteTitle = "Latest Highlights | OurMatch - Latest Football Highlights";
 
         GoogleHomePage googleHomePage = new GoogleHomePage(driver);
-        resultsPage = new GoogleSearchResultsPage(driver);
 
+        report.startLevel("1. Navigate to google.com");
+        googleHomePage.openGoogleHomePage();
+        report.endLevel();
+
+        report.startLevel("2. At the search area, enter 'ourmatch' and click the ENTER key");
+        resultsPage = new GoogleSearchResultsPage(driver);
         resultsPage = googleHomePage.runGoogleSearch(searchTerm);
+        report.endLevel();
+
         if (resultsPage != null) {
+            // Verify that the 1st title is : Latest Highlights | OurMatch - Latest Football Highlights
             Assert.assertEquals(resultsPage.getFirstTitle(), siteTitle);
+
+            // Verify that the 1st URL is: https://ourmatch.net/videos/
             Assert.assertEquals(resultsPage.getFirstLink(), siteUrl);
         }
 
-    }
-
-    @Test(priority = 2)
-    public void verifyLinkIsValid() {
+        report.startLevel("3. Click on first link");
         homePage = resultsPage.clickFirstLink();
+        report.endLevel();
+
+        // Verify ourmatch homepage is shown
         Assert.assertNotNull(homePage, "link validation test failed");
-
     }
-
 }

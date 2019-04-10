@@ -7,15 +7,25 @@ import utils.ActionBot;
 public class GoogleHomePage extends BasePage {
 
 
-    private static final String HOMEPAGE_URL = "https://www.google.com/";
+    private static final String GOOGLE_HOMEPAGE_URL = "https://www.google.com/";
     private final By searchBoxSelector = By.xpath("//*[@id='tsf']/div[2]/div/div[1]/div/div[1]/input");
 
     public GoogleHomePage(WebDriver driver) {
         super(driver);
     }
 
+
+     public void openGoogleHomePage(){
+         ActionBot.navigateToURL(GOOGLE_HOMEPAGE_URL);
+     }
+
+    /**
+     * This method run google search
+     *
+     * @param searchTerm - The term to search
+     * @return - A new GoogleSearchResults Page
+     */
     public GoogleSearchResultsPage runGoogleSearch(String searchTerm) {
-        ActionBot.navigateToURL(HOMEPAGE_URL);
 
         ActionBot.clickOnElement(searchBoxSelector, "Search Box");
         ActionBot.writeToElement(searchBoxSelector, searchTerm);
@@ -23,7 +33,6 @@ public class GoogleHomePage extends BasePage {
 
         return new GoogleSearchResultsPage(driver);
     }
-
 
 
 }

@@ -4,7 +4,6 @@ package tests;
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
 import infra.pages.HomePage;
-import org.junit.Before;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import utils.ActionBot;
 import utils.MainConfig;
-import utils.WebDriverFacrory;
+import utils.WebDriverFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,10 +30,8 @@ public abstract class BaseTest {
     public void setup() throws IOException {
         MainConfig.initFromFile("src/main/resources/config/MainConfig.properties");
 
-        System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/java/utils/webdrivers/chromedriver");
         if (driver == null) {
-            driver = WebDriverFacrory.getDriver(MainConfig.webDriverType);
-            driver.manage().window().maximize();
+            driver = WebDriverFactory.getDriver(MainConfig.webDriverType);
         }
         report = ReportManager.getInstance();
     }
@@ -43,6 +40,7 @@ public abstract class BaseTest {
     // Run after ALL tests!
     @AfterClass
     public void afterAllTests() throws Exception {
+        // TODO: take screenshot after wach test, disable for debugging
         takeScreenShot("Browser state when test ends");
 
         if (MainConfig.closeBrowserAtTestEnd) {
@@ -59,6 +57,11 @@ public abstract class BaseTest {
         return driver;
     }
 
+    /**
+     * This methods take a screenshot
+     * @param description - The description to add to the screenshot
+     * @throws Exception
+     */
     public static void takeScreenShot(String description) throws Exception{
 
         if (driver != null){

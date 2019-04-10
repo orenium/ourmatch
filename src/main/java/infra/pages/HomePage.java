@@ -11,13 +11,33 @@ import java.util.Set;
 
 public class HomePage extends BasePage {
 
-    public static List<WebElement> iframes;
+    //    public static List<WebElement> iframes;
+    public static HashMap<String, String> leaguesAndLinksMap;
 
     public HomePage(WebDriver driver) {
         super(driver);
-        closeAcceptCookiesDialog();
+        setLeaguesMap();
     }
 
+    private void setLeaguesMap() {
+        leaguesAndLinksMap = new HashMap();
+
+        leaguesAndLinksMap.put(" Premier League", "https://ourmatch.net/videos/england/premier-league-highlights/");
+        leaguesAndLinksMap.put(" La Liga", "https://ourmatch.net/videos/spain/la-liga-highlights/");
+        leaguesAndLinksMap.put(" Serie A", "https://ourmatch.net/videos/italy/serie-a-highlights/");
+        leaguesAndLinksMap.put(" Bundesliga", "https://ourmatch.net/videos/germany/bundesliga-highlights/");
+        leaguesAndLinksMap.put(" Ligue 1", "https://ourmatch.net/videos/france/ligue-1-highlights/");
+        leaguesAndLinksMap.put(" Champions League", "https://ourmatch.net/videos/europe/uefa-champions-league-highlights/");
+        leaguesAndLinksMap.put(" Europa League", "https://ourmatch.net/videos/europe/uefa-europa-league-highlights/");
+    }
+
+
+    /**
+     * This method validate the main leagues and the match to their countries
+     *
+     * @param leaguesAndLinks - The leagues <--> country hashmap
+     * @return - True is all match, false if not
+     */
     public boolean mainLeaguesLinksValidation(HashMap<String, String> leaguesAndLinks) {
 
         By leaguesTitles = By.cssSelector("li.popular-leagues-list ul li.hover-tp a");
@@ -57,34 +77,43 @@ public class HomePage extends BasePage {
         return isValid;
     }
 
-
+    /**
+     * This methods search in the search field at the ourmatch site
+     *
+     * @param searchTerm - The term to search
+     * @return - True if the search was done (validated by searching the search term at the URL), false if not
+     */
     public boolean search(String searchTerm) {
         By searchInput = By.cssSelector("input.search-text");
         By searchBtn = By.className("search-submit");
-
+        if (searchTerm.equals("randomSearchTerm")) {
+            searchTerm = ActionBot.generateRandomString(10);
+        }
         ActionBot.writeToElement(searchInput, searchTerm);
         ActionBot.clickOnElement(searchBtn, "searchBtn");
-        report.log("Current Url: " + driver.getCurrentUrl());
-
         return validateSearchInURL(searchTerm);
     }
 
-    public HashMap getLeaguesAndCountriesMap() {
-
-        if (leaguesAndLinksMap != null) {
-            return leaguesAndLinksMap;
-        } else {
-            report.log("Unable to get leaguesAndCountriesMap");
-            return null;
-        }
+    public String getErrorMsg() {
+        By errorMsgDiv = By.cssSelector("div.error-msg");
+        String msg = ActionBot.getElementText(errorMsgDiv);
+        report.log("Error msg: " + msg);
+        return msg;
     }
 
+    /**
+     * This function validates that a certain term is found at the current page url
+     *
+     * @param searchTerm - The term to search
+     * @return - True if found in url, false if not
+     */
     private boolean validateSearchInURL(String searchTerm) {
 
         boolean isValid = false;
 
         String url = driver.getCurrentUrl();
-        if (url.contains(searchTerm)) {
+        report.log("Current Url: " + url);
+        if (url.contains("s= + " + searchTerm)) {
             isValid = true;
         } else {
             if (searchTerm.length() > 0) {
@@ -104,12 +133,21 @@ public class HomePage extends BasePage {
         return isValid;
     }
 
+    /**
+     * This method select a random match
+     *
+     * @return - The selected match page
+     */
     public GamePage selectRandomItem() {
         By videosOnPage = By.cssSelector(".vidthumb");
         ActionBot.selectRandomItem(videosOnPage);
         return new GamePage(driver);
     }
 
+    /**
+     * This method check the views (watched) data
+     */
+    //TODO: finish this
     public void getViewsData() {
         By viewsLocator = By.cssSelector("span.views i.count");
         List<String> viewsValues = ActionBot.getTextFromElementList(viewsLocator);
@@ -120,17 +158,23 @@ public class HomePage extends BasePage {
                     val.replace("k", "");
                     val = val.replace("k", "");
                     long num = Long.parseLong(val);
+                    System.out.println("num: " + num);
                 }
                 System.out.println("val: " + val);
             }
         } catch (java.lang.NumberFormatException ex) {
             System.out.println("NumberFormatException");
+            report.log(ex.getMessage());
         }
     }
 
-
+    /**
+     * This method clicks on the twitter icon
+     *
+     * @return - New TwitterPopUpPage
+     */
     public TwitterPopUpPage followOnTwitter() {
-        ActionBot.clickOnElementInIFrame(By.cssSelector("div#header iframe[src*='twitter']"), By.cssSelector("a#follow-button"));
+        ActionBot.clickOnElementInIFrame(By.cssSelector("div#header iframe[src*='twitter']"), By.cssSelector("a#follow-button"), " Twitter button");
         String mainPage = driver.getWindowHandle();
         Set<String> windows = driver.getWindowHandles();
         for (String window : windows) {
@@ -139,8 +183,7 @@ public class HomePage extends BasePage {
                 break;
             }
         }
-        By test = By.cssSelector("div#bd");
-        report.log("iframe src: "+ driver.getCurrentUrl());
+        report.log("iframe src: " + driver.getCurrentUrl());
 
         return new TwitterPopUpPage(driver);
     }

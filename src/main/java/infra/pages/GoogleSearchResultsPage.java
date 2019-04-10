@@ -11,12 +11,18 @@ public class GoogleSearchResultsPage extends BasePage {
 
     private By resultsLinks = By.cssSelector(".iUh30 span");
 
+
+
     public GoogleSearchResultsPage(WebDriver driver) {
         super(driver);
     }
 
 
-
+    /**
+     * This method clicks on the first result link
+     *
+     * @return - A ourmatch new Homepage
+     */
     public HomePage clickFirstLink() {
 
         List<WebElement> links = ActionBot.getAllElements(resultsLinks);
@@ -26,7 +32,11 @@ public class GoogleSearchResultsPage extends BasePage {
         return new HomePage(driver);
     }
 
-
+    /**
+     * Thie method get the first title from a google search result
+     *
+     * @return - The title
+     */
     public String getFirstTitle() {
 
         By firstResTitle = By.cssSelector("div[id=res] a h3");
@@ -35,6 +45,11 @@ public class GoogleSearchResultsPage extends BasePage {
         return title;
     }
 
+    /**
+     * Thie method get the first link from a google search result
+     *
+     * @return - The link (url)
+     */
     public String getFirstLink() {
 
         String link = ActionBot.getAllElements(resultsLinks).get(0).getText();

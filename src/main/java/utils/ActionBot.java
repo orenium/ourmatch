@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Listeners;
 import tests.BaseTest;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -115,7 +116,7 @@ public class ActionBot {
     }
 
     /**
-     * This mehtod checks if a certain element is displayed on not
+     * This method checks if a certain element is displayed on not
      *
      * @param elementLocator - The element to check
      * @return - True if displayed, false if not
@@ -127,16 +128,26 @@ public class ActionBot {
             WebElement element = driver.findElement(elementLocator);
             if (element.isDisplayed()) {
                 isDisplayed = true;
-            } else {
-                waitForElementToBeDisplayed(elementLocator);
-                isDisplayed = true;
             }
-
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             waitForElementToBeDisplayed(elementLocator);
-        } catch (Exception ex) {
-            report.log(ex.getMessage());
+            isDisplayed = true;
         }
+        return isDisplayed;
+    }
+
+    /**
+     * This method checks if a certain element is located inside a givem iframe
+     *
+     * @param iFrameLocator  - The iframe By locator
+     * @param elementLocator - The element inside the iframe By locator
+     * @return - True if found, false if not
+     */
+    public static boolean isElementDisplayedInIframe(By iFrameLocator, By elementLocator) {
+        boolean isDisplayed;
+        switchToIFrameDriver(iFrameLocator);
+        isDisplayed = isElementDisplayed(elementLocator);
+        switchToDefaultContent();
         return isDisplayed;
     }
 
@@ -246,6 +257,21 @@ public class ActionBot {
         return text;
     }
 
+    public static String getElementInIframeText(By iFrameLocator, By elementLocator) {
+        switchToIFrameDriver(iFrameLocator);
+        String text = "";
+        try {
+            if (isElementDisplayedInIframe(iFrameLocator, elementLocator)) {
+                WebElement element = driver.findElement(elementLocator);
+                text = element.getText();
+            }
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            report.log("Couldn't find element element text, returning empty string..");
+        }
+        switchToDefaultContent();
+        return text;
+    }
+
 
     /**
      * This method returns a list of strings from a list of webelements
@@ -283,8 +309,17 @@ public class ActionBot {
         return index;
     }
 
+    //Switch focus to new tab
+    public static void switchToNewTab() {
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1));
+        report.log("Switching to the new tab");
+    }
+
+
     /**
      * This method get an attribute value from a webelement
+     *
      * @param byLocator - The element's By locator
      * @param attribute - The requested attribute's name
      * @return - The attribute's value
@@ -296,6 +331,7 @@ public class ActionBot {
 
     /**
      * This method search for a webelement
+     *
      * @param byLocator - The element's By locator
      * @return - Webelement
      */
@@ -306,6 +342,7 @@ public class ActionBot {
 
     /**
      * This method double clicks on a webelement
+     *
      * @param byLocator - The element's By locator
      */
     public static void doubleClick(By byLocator) {
@@ -315,9 +352,10 @@ public class ActionBot {
 
     /**
      * This method switch the webdriver to iframe so we can find and do things on element inside
+     *
      * @param iFrameLocator - The iframe's By locator
      */
-    private static void switchToIFrameDriver(By iFrameLocator) {
+    public static void switchToIFrameDriver(By iFrameLocator) {
         WebElement iFrame = driver.findElement(iFrameLocator);
         driver.switchTo().frame(iFrame);
     }
@@ -325,12 +363,13 @@ public class ActionBot {
     /**
      * This methods 'release the webdriver from the iframe boundaries and changed back to the default DOM driver
      */
-    private static void switchToDefaultContent() {
+    public static void switchToDefaultContent() {
         driver.switchTo().defaultContent();
     }
 
     /**
      * This method moves to an element in an iframe
+     *
      * @param iFrameLocator   - The iframe tag to move to
      * @param elementInIFrame - The element to move inside the iframe
      */
@@ -350,14 +389,34 @@ public class ActionBot {
      */
     public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame, String elementName) {
         switchToIFrameDriver(iFrameLocator);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
+//        WebElement element = driver.findElement(elementInIFrame);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(elementInIFrame)).click();
         report.log("element " + elementName + " (inside iframe) was clicked");
         switchToDefaultContent();
     }
 
     /**
-     * This method get the text from an elment locatied in an iframe element
-     * @param iFrameLocator - The iframe By locator
+     * This method click on a webelemnt which wrapped in an iframe tag
+     *
+     * @param waitInSeconds   - The new webdriverWait requested in seconds
+     * @param iFrameLocator   - The iframe tag to search in
+     * @param elementInIFrame - The element to click inside the iframe
+     * @param elementName     - Element's name (for logging)
+     */
+    public static void clickOnElementInIFrame(int waitInSeconds, By iFrameLocator, By elementInIFrame, String elementName) {
+        switchToIFrameDriver(iFrameLocator);
+        WebDriverWait wait = new WebDriverWait(driver, waitInSeconds);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
+        report.log("element " + elementName + " (inside iframe) was clicked");
+        switchToDefaultContent();
+    }
+
+
+    /**
+     * This method get the text from an element located in an iframe element
+     *
+     * @param iFrameLocator   - The iframe By locator
      * @param elementInIFrame - The element's By locator
      * @return - The element's text
      */
@@ -370,6 +429,7 @@ public class ActionBot {
 
     /**
      * This method return an index as a number
+     *
      * @param listSize - The list (for the random limits)
      * @return - A random number
      */
@@ -377,5 +437,14 @@ public class ActionBot {
         return random.nextInt(listSize);
     }
 
+
+    public static String generateRandomString(int stringLength) {
+        String generatedString = "";
+        Random random = new Random();
+        while (generatedString.length() < stringLength) {
+            generatedString += (char) (97 + random.nextInt(25));
+        }
+        return generatedString;
+    }
 
 }

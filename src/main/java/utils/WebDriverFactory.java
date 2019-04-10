@@ -1,15 +1,23 @@
 package utils;
 
+import il.co.topq.difido.ReportDispatcher;
+import il.co.topq.difido.ReportManager;
 import infra.pages.Browsers;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class WebDriverFacrory {
+import java.util.concurrent.TimeUnit;
+
+import static utils.MainConfig.webDriverType;
+
+public class WebDriverFactory {
 
     public static WebDriver driver;
 
-    public WebDriverFacrory() {
+
+    public WebDriverFactory() {
+        ReportDispatcher report = ReportManager.getInstance();
     }
 
     public static WebDriver getDriver(Browsers browser) {
@@ -24,6 +32,14 @@ public class WebDriverFacrory {
                 driver = new FirefoxDriver();
                 break;
         }
+
+        driver.manage().timeouts().implicitlyWait(MainConfig.webDriverImplicitWaitInSeconds, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+
+        ReportDispatcher report = ReportManager.getInstance();
+        report.log("Opened new " + webDriverType + " browser window");
+
+
         return driver;
     }
 

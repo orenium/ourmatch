@@ -8,12 +8,17 @@ public class LinksValidationTest extends BaseTest {
 
     @Test(priority = 1)
     public void validateLeaguesLinks() {
+        boolean isLinksValid;
+
+        report.startLevel("1. Navigate to ourmatch homepage");
         HomePage homePage = navigateToHomePage();
-        Assert.assertTrue(homePage.mainLeaguesLinksValidation(homePage.getLeaguesAndCountriesMap()),
-                "leagues links validation failed");
+        report.endLevel();
+
+        report.startLevel("");
+        isLinksValid = homePage.mainLeaguesLinksValidation(homePage.leaguesAndLinksMap);
+        report.endLevel();
+        Assert.assertTrue(isLinksValid, "leagues links validation failed");
     }
-
-
 
 
 }
