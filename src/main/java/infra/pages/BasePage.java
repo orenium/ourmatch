@@ -13,8 +13,6 @@ public abstract class BasePage {
 
     protected WebDriver driver;
     protected static ReportDispatcher report;
-//    public static ActionBot actionBot;
-
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -34,7 +32,7 @@ public abstract class BasePage {
         boolean isClosed = false;
 
         try {
-            if (ActionBot.isElementDisplayed(container)) {
+            if (ActionBot.isElementDisplayed(container,true)) {
                 ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close button");
             } else {
                 ActionBot.waitForElementToBeDisplayed(container);
@@ -45,7 +43,7 @@ public abstract class BasePage {
         }
 
         Thread.sleep(2000);
-        if (!ActionBot.isElementDisplayed(container)) {
+        if (!ActionBot.isElementDisplayed(container,true)) {
             isClosed = true;
         }
         return isClosed;

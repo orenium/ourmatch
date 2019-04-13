@@ -9,7 +9,8 @@ import java.util.Properties;
 public class MainConfig {
 
     public static Browsers webDriverType;
-    public static boolean closeBrowserAtTestEnd;
+    public static boolean closeBrowserAtClassTestEnd;
+    public static boolean closeBrowserAtSuiteTestEnd;
     public static int webDriverImplicitWaitInSeconds;
     public static String baseUrl;
     public static String searchTerm;
@@ -24,7 +25,8 @@ public class MainConfig {
         prop.load(input);
 
         webDriverType = Browsers.valueOf(prop.getProperty("webDriverType"));
-        closeBrowserAtTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtTestEnd"));
+        closeBrowserAtClassTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtTestEnd"));
+        closeBrowserAtSuiteTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtSuiteTestEnd"));
         webDriverImplicitWaitInSeconds = Integer.parseInt(prop.getProperty("webDriverImplicitWaitInSeconds"));
         baseUrl = prop.getProperty("siteURL");
         searchTerm = prop.getProperty("searchTerm");

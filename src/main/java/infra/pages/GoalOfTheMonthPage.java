@@ -31,7 +31,6 @@ public class GoalOfTheMonthPage extends BasePage {
 
     /**
      * This method votes for goal of the month (if available)
-     *
      * @return - True if vote was made, false if not
      */
     public boolean vote() {
@@ -56,7 +55,7 @@ public class GoalOfTheMonthPage extends BasePage {
      * @return - True if pool is close, false if not
      */
     public boolean isPollClosed() {
-        if (ActionBot.isElementDisplayed(pollMsg)) {
+        if (ActionBot.isElementDisplayed(pollMsg,true)) {
             String pollMsgText = ActionBot.getElementText(pollMsg);
             if (pollMsgText.contains("Vote Now")) {
                 isClosedForVoting = false;
@@ -78,7 +77,7 @@ public class GoalOfTheMonthPage extends BasePage {
      */
     public boolean printScoresToLog() {
         boolean isPrintedToLogs = false;
-        if (ActionBot.isElementDisplayed(scoreDiv)) {
+        if (ActionBot.isElementDisplayed(scoreDiv, true)) {
             report.log(ActionBot.getElementText(pollMsg));
             report.log("Results:");
             List<String> names = ActionBot.getTextFromElementList(spanAnswerText);

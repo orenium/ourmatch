@@ -33,7 +33,7 @@ public class GoogleSearchResultsPage extends BasePage {
     }
 
     /**
-     * Thie method get the first title from a google search result
+     * This method get the first title from a google search result
      *
      * @return - The title
      */
@@ -46,7 +46,7 @@ public class GoogleSearchResultsPage extends BasePage {
     }
 
     /**
-     * Thie method get the first link from a google search result
+     * This method get the first link from a google search result
      *
      * @return - The link (url)
      */

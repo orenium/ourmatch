@@ -10,16 +10,11 @@ import java.util.List;
 
 public class GamePage extends BasePage {
 
-    By player = By.id("rmpPlayer");
-
-    By rmp = By.cssSelector("div.rmp-overlay-button.rmp-color-bg");
-    By closePopupBtn = By.cssSelector("div.closeButtonIcon");
-
     By iframe = By.cssSelector("div.embed-code iframe");
     By embededCodeDiv = By.cssSelector("div.embed-code");
     By matchTeams = By.cssSelector("div.match_team_header.clearfix h2");
     By spoilerDiv = By.cssSelector("div.vs.spoiler");
-    By videoSourceOptions = By.cssSelector("li[data-pos='top']");
+    By youTubeErrorMsg = By.cssSelector("div.ytp-error-content-wrap-reason span");
 
     String homeTeam;
     String awayTeam;
@@ -34,30 +29,30 @@ public class GamePage extends BasePage {
     }
 
 
-    public boolean playHighlights() {
+    /**
+     * This method moves to the video (match highlights) and plays the video
+     *
+     * @return True if plays, false if not
+     * NOTE: In case of 3rd party sites, if new tab was open once clicked, test will still pass
+     */
+    public boolean playHighlights() throws InterruptedException {
         boolean isPlayed = false;
         ActionBot.moveToElement(embededCodeDiv);
 
-        List<WebElement> videoSources = ActionBot.getAllElements(videoSourceOptions);
-
-//        for (WebElement source: videoSources) {
-//            ActionBot.clickOnElement(source, "selecting match source");
-
-
-        if (ActionBot.isElementDisplayed(iframe)) {
+        if (ActionBot.isElementDisplayed(iframe, true)) {
             String videoSrc = ActionBot.getElementAttribute(iframe, "src");
             report.log("Playing match highlights from source: " + videoSrc);
             if (videoSrc.contains("www.youtube.com")) {
                 isPlayed = playViaYoutubePlayer();
             } else if (videoSrc.contains("oms.veuclips.com")) {
                 ActionBot.clickOnElementInIFrame(iframe, By.cssSelector("div.video-thumbnail"), "iframe video-thumbnail");
-                OmsPage omsPage = playViaInOms(true);
+                OmsPage omsPage = playViaOms(true);
                 isPlayed = omsPage.verifyNewTabWasOpen();
                 if (isPlayed) {
                     omsPage.clickPlay();
                 }
             } else if (videoSrc.contains("oms.videostreamlet.net")) {
-                playViaInOms(false);
+                playViaOms(false);
                 By playBtn = By.cssSelector("span.rmp-i.rmp-i-play");
                 if (ActionBot.isElementDisplayedInIframe(iframe, playBtn)) {
                     ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play button");
@@ -67,26 +62,36 @@ public class GamePage extends BasePage {
                 isPlayed = playViaStreamable();
             }
         }
-//        }
         return isPlayed;
     }
 
-    public OmsPage playViaInOms(boolean isNewTabOpen) {
 
-        if (ActionBot.isElementDisplayed(iframe)) {
+    /**
+     * This method plays a video from oms site
+     *
+     * @param isNewTabOpen - Is should be opened in a new tab - true is so, false if not
+     * @return - New OmsPage
+     * @throws InterruptedException
+     */
+    private OmsPage playViaOms(boolean isNewTabOpen) throws InterruptedException {
+
+        if (ActionBot.isElementDisplayed(iframe, true)) {
             ActionBot.clickOnElement(iframe, "oms iframe");
         }
-        try {
-            Thread.sleep(2000);
-        } catch (Exception ex) {
-        }
+        Thread.sleep(2000);
         if (isNewTabOpen) {
             ActionBot.switchToNewTab();
         }
         return new OmsPage(driver);
     }
 
-    public boolean playViaStreamable() {
+
+    /**
+     * This method plays a video from Streamable source
+     *
+     * @return - true if played, false if not
+     */
+    private boolean playViaStreamable() {
 
         boolean isPlayed = false;
         By playBtn = By.id("play-button");
@@ -95,26 +100,35 @@ public class GamePage extends BasePage {
         return isPlayed;
     }
 
-
+    /**
+     * This method plays a video from Youtube source
+     *
+     * @return - true if played, false if not
+     */
     private boolean playViaYoutubePlayer() {
         By fullScreenBtn = By.cssSelector("button.ytp-fullscreen-button.ytp-button");
 
         boolean isPlayingInYoutube = false;
 
         By playBtn = By.cssSelector("button.ytp-large-play-button.ytp-button");
-        if (ActionBot.isElementDisplayed(iframe)) {
+        if (ActionBot.isElementDisplayed(iframe, true)) {
             ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play in Youtube");
             isPlayingInYoutube = true;
-            if (!isErrorMsgShown()) {
-                ActionBot.moveToElementInIFrame(iframe, fullScreenBtn);
-                ActionBot.clickOnElementInIFrame(iframe, fullScreenBtn, "full screen");
+             if (ActionBot.isElementDisplayedInIframe(iframe, youTubeErrorMsg)) {
+                 //TODO: still not handeled
+                 getErrorMsgIfShown();
             }
         }
         return isPlayingInYoutube;
     }
 
-    private boolean isErrorMsgShown() {
-        By youTubeErrorMsg = By.cssSelector("div.ytp-error-content-wrap-reason span");
+    /**
+     * This method checks if an error msg is shown when playing a Youtube video
+     *
+     * @return - True if error msg is shown, false if not
+     */
+    private boolean getErrorMsgIfShown() {
+
         By subReason = By.cssSelector("div.ytp-error-content-wrap-subreason span");
         boolean isShown = false;
         ActionBot.moveToElementInIFrame(iframe, youTubeErrorMsg);
@@ -126,48 +140,6 @@ public class GamePage extends BasePage {
         return isShown;
     }
 
-
-    public void closePopup() {
-
-        ActionBot.clickOnElementInIFrame(iframe, closePopupBtn, "close Popup button");
-//        try {
-//        } catch (org.openqa.selenium.TimeoutException ex) {
-//            System.out.println("TimeoutException");
-//            ActionBot.clickOnIFrameElement(iframe, closePopupBtb, "closePopupBtn");
-//            ActionBot.moveToElement(closePopupBtb);
-//            ActionBot.clickOnElement(closePopupBtb, "close popup btn");
-//            ActionBot.clickOnElement(closeButtonContainer, "close popup btn");
-//        }
-    }
-
-
-    /**
-     * This method opens the current game in full screen mode
-     *
-     * @return - True if action succeed, false if not
-     */
-//    public boolean openVideoFullScreen() {
-//        boolean isFullscreen = false;
-//
-//        try {
-//            for (WebElement video : ActionBot.getAllElements(videoHighlightsSrcs)) {
-//                ActionBot.clickOnElement(video, "video src");
-//                System.out.println("Page URL: " + driver.getCurrentUrl());
-//               ActionBot.clickOnElementInIFrame(iframe, fullScreenBtn, "full Screen button");
-//               report.log("switching to full screen");
-//                isFullscreen = true;
-//                break;
-//            }
-//        } catch (org.openqa.selenium.TimeoutException ex) {
-//           ActionBot.clickOnElement(iframe, "iframe");
-//           ActionBot.clickOnElementInIFrame(iframe, linkIniFrame, "link in iFrame");
-//
-//        }
-//        return isFullscreen;
-//    }
-    public void printErrorReason(By errorElement) {
-        report.log(ActionBot.getElementText(errorElement));
-    }
 
     /**
      * This method prints to the log the current match teams
@@ -190,13 +162,14 @@ public class GamePage extends BasePage {
     public boolean showMatchScore() {
         boolean isScoreShown = false;
         By matchScoreBtn = By.cssSelector("div.spoilerbtn button");
-        if (ActionBot.isElementDisplayed(matchScoreBtn)) {
+        if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
             ActionBot.moveToElement(By.cssSelector("div.score"));
             ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
             ActionBot.waitForElementToBeDisplayed(spoilerDiv);
             String vsText = ActionBot.getElementText(spoilerDiv);
             if (vsText.equals("FT")) {
                 isScoreShown = true;
+                report.log("Match score: " + ActionBot.getElementText(By.cssSelector("div.home-score.spoiler")) + " : " + ActionBot.getElementText(By.cssSelector("div.away-score.spoiler")));
             }
         }
         return isScoreShown;
@@ -210,7 +183,7 @@ public class GamePage extends BasePage {
     public boolean hideMatchScore() {
         boolean isScoreHidden = false;
         By matchScoreBtn = By.cssSelector("div.spoilerbtn button");
-        if (ActionBot.isElementDisplayed(matchScoreBtn)) {
+        if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
             ActionBot.moveToElement(By.cssSelector("div.score"));
             ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
             ActionBot.waitForElementToBeDisplayed(spoilerDiv);
@@ -241,6 +214,12 @@ public class GamePage extends BasePage {
         return isCommentLeft();
     }
 
+
+    /**
+     * This method validate that a comment was posted
+     *
+     * @return - True if a comment was left, false if not
+     */
     private boolean isCommentLeft() {
         boolean isCommentLeft = false;
         By commentName = By.cssSelector("div#comments ul li cite");

@@ -37,12 +37,19 @@ public class OmsPage extends BasePage {
 
     public boolean clickPlay() {
         By playBtnSpan = By.cssSelector("span.rmp-i.rmp-i-play");
-        WebElement iFrame = driver.findElement(iframeLocator);
-        driver.switchTo().frame(iFrame);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(playBtnSpan)).click();
-        report.log("Play button was clicked");
-        isPlayed = true;
-        ActionBot.switchToDefaultContent();
+        if (ActionBot.isElementDisplayed(iframeLocator, false)) {
+            try {
+                ActionBot.switchToIFrameDriver(iframeLocator);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(playBtnSpan)).click();
+                report.log("Play button was clicked");
+                isPlayed = true;
+                ActionBot.switchToDefaultContent();
+            } catch(org.openqa.selenium.NoSuchElementException ex){
+                printErrorMsg();
+            }
+        } else {
+            printErrorMsg();
+        }
         return isPlayed;
     }
 
@@ -52,7 +59,15 @@ public class OmsPage extends BasePage {
         if (url.contains("http://oms.veuclips.com/"))
             return true;
         else return false;
+    }
 
+    private void printErrorMsg(){
+        By notFoundError = By.cssSelector("div#notfound");
+        report.log("Unable to play video");
+        if (ActionBot.isElementDisplayed(notFoundError, true)){
+            report.log("Error:" + ActionBot.getElementText(By.cssSelector("div#notfound h1")));
+            report.log(ActionBot.getElementText(By.cssSelector("div#notfound h2")));
+        }
     }
 }
 

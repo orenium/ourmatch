@@ -13,18 +13,15 @@ import java.util.ArrayList;
 
 public class SearchATeamTest extends BaseTest {
 
-    //    private String SEARCH_TERM = MainConfig.searchTerm;
     private HomePage homePage;
 
 
     @Test(dataProvider = "csvParamsProvider")
     public void search(String searchTerm) {
         boolean isSearched;
-        if (homePage == null) {
-            report.startLevel("1. Navigate to ourmatch homepage");
-            homePage = navigateToHomePage();
-            report.endLevel();
-        }
+        report.startLevel("1. Navigate to ourmatch homepage");
+        homePage = navigateToHomePage();
+        report.endLevel();
 
         report.startLevel("2. At the search area, enter " + searchTerm + " and click the search button");
 //        Search terms:
@@ -36,14 +33,6 @@ public class SearchATeamTest extends BaseTest {
 
 //      Verify that for each term, the search term is shown at the URL right after to the "s="
         Assert.assertTrue(isSearched, "fail to search: " + searchTerm);
-
-//       - some jibrish (scenario for no results handling)
-        if (searchTerm.equals("randomSearchTerm")) {
-            String errorMsg = homePage.getErrorMsg();
-
-//          Verify that in case of no results, a popper msg is shown ("Apologies, but no results were found.")
-            Assert.assertEquals(errorMsg, "Apologies, but no results were found.");
-        }
     }
 
 
@@ -72,7 +61,28 @@ public class SearchATeamTest extends BaseTest {
         }
         return params;
     }
+
+
+    @Test
+    public void noSearchResultsHandling() {
+
+        report.startLevel("1. Navigate to ourmatch homepage");
+        if (homePage == null) {
+            homePage = navigateToHomePage();
+        }
+        report.endLevel();
+
+
+        report.startLevel("2. At the search area, enter some jibrish search term and click the search button");
+        homePage.search("randomSearchTerm");
+        String errorMsg = homePage.getErrorMsg();
+        report.endLevel();
+
+//          Verify that in case of no results, a popper msg is shown ("Apologies, but no results were found.")
+        Assert.assertEquals(errorMsg, "Apologies, but no results were found.");
+    }
 }
+
 
 
 

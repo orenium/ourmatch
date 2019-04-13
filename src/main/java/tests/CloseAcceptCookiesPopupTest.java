@@ -4,7 +4,7 @@ import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CloseAcceptCookiesPopuptest extends BaseTest {
+public class CloseAcceptCookiesPopupTest extends BaseTest {
 
     @Test
     public void CloseAcceptCookiesPopup() throws InterruptedException {

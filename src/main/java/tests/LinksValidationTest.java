@@ -14,7 +14,8 @@ public class LinksValidationTest extends BaseTest {
         HomePage homePage = navigateToHomePage();
         report.endLevel();
 
-        report.startLevel("");
+        report.startLevel("2. Validate main leagues links");
+        homePage.setLeaguesMap();
         isLinksValid = homePage.mainLeaguesLinksValidation(homePage.leaguesAndLinksMap);
         report.endLevel();
         Assert.assertTrue(isLinksValid, "leagues links validation failed");

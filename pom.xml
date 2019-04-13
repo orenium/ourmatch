@@ -7,13 +7,7 @@
     <groupId>com.broshi.oren</groupId>
     <artifactId>ourmatch</artifactId>
     <version>1.0</version>
-
-    <repositories>
-        <repository>
-            <id>topq</id>
-            <url>http://maven.top-q.co.il/content/groups/public</url>
-        </repository>
-    </repositories>
+    @Listeners(il.co.topq.difido.ReportManagerHook.class)
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
@@ -45,6 +39,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
         </dependency>
+
 
 
     </dependencies>

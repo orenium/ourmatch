@@ -4,6 +4,7 @@ import infra.pages.GamePage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.ActionBot;
 
 public class PlayHighlightsTest extends BaseTest {
 
@@ -12,7 +13,7 @@ public class PlayHighlightsTest extends BaseTest {
     GamePage gamePage;
 
     @Test
-    public void playRandomHighLights() {
+    public void playRandomHighLights() throws InterruptedException {
 
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();

@@ -22,7 +22,7 @@ public class LeaveCommentTest extends BaseTest {
         boolean commentLeft = gamePage.leaveComment();
         report.endLevel();
 
-        // Verify that comment was left by comment's writer and comment's content
+        // Verify that comment was left by comment's author and comment's content
         Assert.assertTrue(commentLeft, "Failed to leave comment");
     }
 

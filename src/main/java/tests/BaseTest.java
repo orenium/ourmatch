@@ -8,6 +8,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import utils.ActionBot;
@@ -37,14 +38,13 @@ public abstract class BaseTest {
     }
 
 
-    // Run after ALL tests!
+    // Run after ALL tests classes!
     @AfterClass
-    public void afterAllTests() throws Exception {
-        // TODO: take screenshot after wach test, disable for debugging
+    public void afterAllTestsClasses() throws Exception {
         takeScreenShot("Browser state when test ends");
 
-        if (MainConfig.closeBrowserAtTestEnd) {
-            driver.close();
+        if (MainConfig.closeBrowserAtClassTestEnd) {
+//            driver.close();
         }
     }
 
@@ -67,6 +67,16 @@ public abstract class BaseTest {
         if (driver != null){
             File screenShotFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             report.addImage(screenShotFile,description);
+        }
+    }
+
+
+    // Run after ALL tests!
+    @AfterSuite
+    public void afterAllTests() {
+
+        if (MainConfig.closeBrowserAtSuiteTestEnd) {
+            driver.close();
         }
     }
 

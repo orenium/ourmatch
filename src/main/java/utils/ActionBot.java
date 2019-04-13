@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Listeners;
 import tests.BaseTest;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -119,19 +118,20 @@ public class ActionBot {
      * This method checks if a certain element is displayed on not
      *
      * @param elementLocator - The element to check
+     * @param waitForElement - True if waiting can help, false for quicker reply
      * @return - True if displayed, false if not
      */
-    public static boolean isElementDisplayed(By elementLocator) {
+    public static boolean isElementDisplayed(By elementLocator, boolean waitForElement) {
         boolean isDisplayed = false;
 
         try {
-            WebElement element = driver.findElement(elementLocator);
-            if (element.isDisplayed()) {
+            if (driver.findElement(elementLocator).isDisplayed()) {
                 isDisplayed = true;
             }
         } catch (org.openqa.selenium.NoSuchElementException ex) {
-            waitForElementToBeDisplayed(elementLocator);
-            isDisplayed = true;
+            if (waitForElement) {
+                waitForElementToBeDisplayed(elementLocator);
+            }
         }
         return isDisplayed;
     }
@@ -146,7 +146,7 @@ public class ActionBot {
     public static boolean isElementDisplayedInIframe(By iFrameLocator, By elementLocator) {
         boolean isDisplayed;
         switchToIFrameDriver(iFrameLocator);
-        isDisplayed = isElementDisplayed(elementLocator);
+        isDisplayed = isElementDisplayed(elementLocator, true);
         switchToDefaultContent();
         return isDisplayed;
     }
@@ -230,7 +230,7 @@ public class ActionBot {
     public static String getElementText(By byLocator) {
         String text = "";
         try {
-            if (isElementDisplayed(byLocator)) {
+            if (isElementDisplayed(byLocator,true)) {
                 text = driver.findElement(byLocator).getText();
             }
         } catch (org.openqa.selenium.NoSuchElementException ex) {
@@ -445,6 +445,10 @@ public class ActionBot {
             generatedString += (char) (97 + random.nextInt(25));
         }
         return generatedString;
+    }
+
+    public static void switchDriverToWindow(String window) {
+        driver.switchTo().window(window);
     }
 
 }
