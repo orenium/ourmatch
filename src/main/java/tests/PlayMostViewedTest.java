@@ -22,8 +22,7 @@ public class PlayMostViewedTest extends BaseTest {
         report.startLevel("2. Track and click on the most viewed match on page");
         mostViewedIndex = homePage.getViewsData();
         if (mostViewedIndex > -1){
-//            gamePage = homePage.selectMatchByIndex(mostViewedIndex);
-            gamePage = homePage.selectMatchByIndex(30);
+            gamePage = homePage.selectMatchByIndex(mostViewedIndex);
         }
         report.endLevel();
 

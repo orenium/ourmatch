@@ -28,7 +28,7 @@ public class PlayHighlightsTest extends BaseTest {
         Assert.assertTrue(isScoreShowed, "Failed to show match score");
         report.endLevel();
 
-        report.startLevel("4. Play highlitghts");
+        report.startLevel("4. Play highlights");
 //        When playing a random match there are 3 possible videou sources
 //        - Scenario A - Youtube is the video source
 //        Expected result:  Verify video is played. In case of an error msg, verify error msg is printed to logs.

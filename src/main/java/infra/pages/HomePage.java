@@ -14,6 +14,8 @@ public class HomePage extends BasePage {
 
     //    public static List<WebElement> iframes;
     public static HashMap<String, String> leaguesAndLinksMap;
+    private By homeTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnameh");
+    private By awayTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnamea");
 
     private static By videosOnPage;
 
@@ -83,6 +85,7 @@ public class HomePage extends BasePage {
      * @return - True if the search was done (validated by searching the search term at the URL), false if not
      */
     public boolean search(String searchTerm) {
+        boolean isSearched = false;
         By searchInput = By.cssSelector("input.search-text");
         By searchBtn = By.className("search-submit");
         if (searchTerm.equals("randomSearchTerm")) {
@@ -90,7 +93,8 @@ public class HomePage extends BasePage {
         }
         ActionBot.writeToElement(searchInput, searchTerm);
         ActionBot.clickOnElement(searchBtn, "searchBtn");
-        return validateSearchInURL(searchTerm);
+        isSearched = true;
+        return isSearched;
     }
 
     public String getErrorMsg() {
@@ -106,8 +110,7 @@ public class HomePage extends BasePage {
      * @param searchTerm - The term to search
      * @return - True if found in url, false if not
      */
-    private boolean validateSearchInURL(String searchTerm) {
-
+    public boolean validateSearchInURL(String searchTerm) {
         boolean isValid = false;
 
         String url = driver.getCurrentUrl();
@@ -132,9 +135,33 @@ public class HomePage extends BasePage {
         return isValid;
     }
 
-    public GamePage selectMatchByIndex(int index){
+    /**
+     * This method checks if a search term is shown at the search results
+     *
+     * @param searchTerm - The searched team
+     * @return - True if found (at least at 3 results), false if not
+     */
+    public boolean validateSearchByResults(String searchTerm) {
+        int validResultsFound = 0;
+        boolean isShownInResults = false;
+        List<String> homeTeams = ActionBot.getTextFromElementList(homeTeam);
+        List<String> awayTeams = ActionBot.getTextFromElementList(awayTeam);
+        for (int i = 0; i < homeTeams.size(); i++) {
+            if (homeTeams.get(i).equalsIgnoreCase(searchTerm) || awayTeams.get(i).equalsIgnoreCase(searchTerm)) {
+                validResultsFound++;
+                report.log(validResultsFound + ". Found in result: " + homeTeams.get(i) + " VS " + awayTeams.get(i));
+                if (validResultsFound == 3) {
+                    isShownInResults = true;
+                    break;
+                }
+            }
+        }
+        return isShownInResults;
+    }
+
+    public GamePage selectMatchByIndex(int index) {
         List<WebElement> matches = ActionBot.getAllElements(videosOnPage);
-        if (matches.size() > 0){
+        if (matches.size() > 0) {
             ActionBot.clickOnElement(matches.get(index), "most viewed match");
         }
         return new GamePage(driver);
@@ -152,13 +179,12 @@ public class HomePage extends BasePage {
 
     /**
      * This method check the views (watched) data
+     *
      * @return - The index of most viewed match (per page)
      */
     //TODO: finish this
     public int getViewsData() {
         By viewsLocator = By.cssSelector("span.views i.count");
-        By homeTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnameh");
-        By awayTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnamea");
 
         List<String> viewsValues = ActionBot.getTextFromElementList(viewsLocator);
         List<String> homeTeams = ActionBot.getTextFromElementList(homeTeam);
@@ -166,7 +192,7 @@ public class HomePage extends BasePage {
 
         long formattedValue;
         int mostViews = -1;
-        int mostViewsIndex =-1;
+        int mostViewsIndex = -1;
         int index = 0;
         try {
             for (String val : viewsValues) {

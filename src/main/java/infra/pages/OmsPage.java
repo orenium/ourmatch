@@ -56,9 +56,12 @@ public class OmsPage extends BasePage {
     public boolean verifyNewTabWasOpen() {
         String url = driver.getCurrentUrl();
         report.log("OmsPage was open in browser");
-        if (url.contains("http://oms.veuclips.com/"))
+        if (url.contains("http://oms.veuclips.com/")) {
             return true;
-        else return false;
+        }
+        else {
+            return false;
+        }
     }
 
     private void printErrorMsg(){

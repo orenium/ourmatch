@@ -16,7 +16,7 @@ public class SearchATeamTest extends BaseTest {
     private HomePage homePage;
 
 
-    @Test(dataProvider = "csvParamsProvider")
+    @Test(priority =1, dataProvider = "csvParamsProvider")
     public void search(String searchTerm) {
         boolean isSearched;
         report.startLevel("1. Navigate to ourmatch homepage");
@@ -25,22 +25,29 @@ public class SearchATeamTest extends BaseTest {
 
         report.startLevel("2. At the search area, enter " + searchTerm + " and click the search button");
 //        Search terms:
-//        - barcelaona (single word scenario)
+//        - barcelona (single word scenario)
 //        - real madrid (more than a single worn scenario)
 //        - italy
         isSearched = homePage.search(searchTerm);
         report.endLevel();
 
-//      Verify that for each term, the search term is shown at the URL right after to the "s="
-        Assert.assertTrue(isSearched, "fail to search: " + searchTerm);
+        // Verify you can enter a search term
+        Assert.assertTrue(isSearched, " failed to search " + searchTerm);
+        if (isSearched) {
+            // Verify that for each term, the search term is shown at the URL right after to the "s="
+            Assert.assertTrue(homePage.validateSearchInURL(searchTerm), "fail to find " + searchTerm + " at the url");
+
+            // Verify that for each term, the search term is shown at least 3 times at the search results
+            Assert.assertTrue(homePage.validateSearchByResults(searchTerm), "fail to find " + searchTerm + " at the search results");
+        }
     }
 
 
     @DataProvider(name = "csvParamsProvider")
     public Object[][] dataProvider3() throws Exception {
 
-        FileInputStream fstream = new FileInputStream("src/main/resources/searchTerms.csv");
-        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+        FileInputStream fStream = new FileInputStream("src/main/resources/searchTerms.csv");
+        BufferedReader br = new BufferedReader(new InputStreamReader(fStream));
 
         int numOfLines = 0;
         String line;
@@ -63,7 +70,7 @@ public class SearchATeamTest extends BaseTest {
     }
 
 
-    @Test
+    @Test (priority = 2)
     public void noSearchResultsHandling() {
 
         report.startLevel("1. Navigate to ourmatch homepage");
