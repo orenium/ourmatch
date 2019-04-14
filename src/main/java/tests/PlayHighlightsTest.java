@@ -4,7 +4,6 @@ import infra.pages.GamePage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.ActionBot;
 
 public class PlayHighlightsTest extends BaseTest {
 
