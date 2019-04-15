@@ -14,8 +14,14 @@ public class HomePage extends BasePage {
 
     //    public static List<WebElement> iframes;
     public static HashMap<String, String> leaguesAndLinksMap;
-    private By homeTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnameh");
-    private By awayTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnamea");
+    private static final By homeTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnameh");
+    private static final By awayTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnamea");
+
+    private static final By leaguesTitles = By.cssSelector("li.popular-leagues-list ul li.hover-tp a");
+    private static final By leaguesLinks = By.cssSelector("li.popular-leagues-list ul li a");
+    private static final By searchInput = By.cssSelector("input.search-text");
+    private static final By searchBtn = By.className("search-submit");
+    private static final By viewsLocator = By.cssSelector("span.views i.count");
 
     private static By videosOnPage;
 
@@ -46,8 +52,6 @@ public class HomePage extends BasePage {
      */
     public boolean mainLeaguesLinksValidation(HashMap<String, String> leaguesAndLinks) {
 
-        By leaguesTitles = By.cssSelector("li.popular-leagues-list ul li.hover-tp a");
-        By leaguesLinks = By.cssSelector("li.popular-leagues-list ul li a");
 
         List<WebElement> leaguesTitlesList;
         List<WebElement> leaguesLinksList;
@@ -85,9 +89,8 @@ public class HomePage extends BasePage {
      * @return - True if the search was done (validated by searching the search term at the URL), false if not
      */
     public boolean search(String searchTerm) {
-        boolean isSearched = false;
-        By searchInput = By.cssSelector("input.search-text");
-        By searchBtn = By.className("search-submit");
+        boolean isSearched;
+
         if (searchTerm.equals("randomSearchTerm")) {
             searchTerm = ActionBot.generateRandomString(10);
         }
@@ -162,7 +165,7 @@ public class HomePage extends BasePage {
     public GamePage selectMatchByIndex(int index) {
         List<WebElement> matches = ActionBot.getAllElements(videosOnPage);
         if (matches.size() > 0) {
-            ActionBot.clickOnElement(matches.get(index), "most viewed match");
+            ActionBot.clickOnElement(matches.get(index), "match #" + index);
         }
         return new GamePage(driver);
     }
@@ -182,18 +185,16 @@ public class HomePage extends BasePage {
      *
      * @return - The index of most viewed match (per page)
      */
-    //TODO: finish this
     public int getViewsData() {
-        By viewsLocator = By.cssSelector("span.views i.count");
-
-        List<String> viewsValues = ActionBot.getTextFromElementList(viewsLocator);
-        List<String> homeTeams = ActionBot.getTextFromElementList(homeTeam);
-        List<String> awayTeams = ActionBot.getTextFromElementList(awayTeam);
 
         long formattedValue;
         int mostViews = -1;
         int mostViewsIndex = -1;
         int index = 0;
+        List<String> viewsValues = ActionBot.getTextFromElementList(viewsLocator);
+        List<String> homeTeams = ActionBot.getTextFromElementList(homeTeam);
+        List<String> awayTeams = ActionBot.getTextFromElementList(awayTeam);
+
         try {
             for (String val : viewsValues) {
                 if (val.contains("K")) {

@@ -1,5 +1,6 @@
 package infra.pages;
 
+import il.co.topq.difido.model.Enums;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,17 +11,23 @@ import java.util.List;
 
 public class GamePage extends BasePage {
 
-    By iframe = By.cssSelector("div.embed-code iframe");
-    By embededCodeDiv = By.cssSelector("div.embed-code");
-    By matchTeams = By.cssSelector("div.match_team_header.clearfix h2");
-    By spoilerDiv = By.cssSelector("div.vs.spoiler");
-    By youTubeErrorMsg = By.cssSelector("div.ytp-error-content-wrap-reason span");
+    private static final By iframe = By.cssSelector("div.embed-code iframe");
+    private static final By embededCodeDiv = By.cssSelector("div.embed-code");
+    private static final By matchTeams = By.cssSelector("div.match_team_header.clearfix h2");
+    private static final By spoilerDiv = By.cssSelector("div.vs.spoiler");
+    private static final By youTubeErrorMsg = By.cssSelector("div.ytp-error-content-wrap-reason span");
+    private static final By streamablePlayBtn = By.id("play-button");
+    private static final By youtubePlayBtn = By.cssSelector("button.ytp-large-play-button.ytp-button");
+    private static final By matchScoreBtn = By.cssSelector("div.spoilerbtn button");
+    private static final By commentName = By.cssSelector("div#comments ul li cite");
+    private static final By commentContent = By.cssSelector("div#comments ul li div.comment-content p");
+    private static final By playBtn = By.cssSelector("span.rmp-i.rmp-i-play");
 
-    String homeTeam;
-    String awayTeam;
-    String author = "";
-    String email = MainConfig.email;
-    String commentToPost = MainConfig.comment;
+    private static String homeTeam;
+    private static String awayTeam;
+    private static String author = "";
+    private static String email = MainConfig.email;
+    private static String commentToPost = MainConfig.comment;
 
 
     public GamePage(WebDriver driver) {
@@ -37,6 +44,7 @@ public class GamePage extends BasePage {
      */
     public boolean playHighlights() throws InterruptedException {
         boolean isPlayed = false;
+        OmsPage omsPage;
         ActionBot.moveToElement(embededCodeDiv);
 
         if (ActionBot.isElementDisplayed(iframe, true)) {
@@ -46,14 +54,14 @@ public class GamePage extends BasePage {
                 isPlayed = playViaYoutubePlayer();
             } else if (videoSrc.contains("oms.veuclips.com")) {
                 ActionBot.clickOnElementInIFrame(iframe, By.cssSelector("div.video-thumbnail"), "iframe video-thumbnail");
-                OmsPage omsPage = playViaOms(true);
-                isPlayed = omsPage.verifyNewTabWasOpen();
-                if (isPlayed) {
-                    omsPage.clickPlay();
+                omsPage = playViaOms(true);
+                Thread.sleep(2000);
+                if (omsPage.verifyNewTabWasOpen()) {
+                    isPlayed = omsPage.clickPlay();
                 }
             } else if (videoSrc.contains("oms.videostreamlet.net")) {
-                playViaOms(false);
-                By playBtn = By.cssSelector("span.rmp-i.rmp-i-play");
+                omsPage = playViaOms(false);
+                isPlayed = omsPage.clickPlay();
                 if (ActionBot.isElementDisplayedInIframe(iframe, playBtn)) {
                     ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play button");
                     isPlayed = true;
@@ -93,9 +101,8 @@ public class GamePage extends BasePage {
      */
     private boolean playViaStreamable() {
 
-        boolean isPlayed = false;
-        By playBtn = By.id("play-button");
-        ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play button");
+        boolean isPlayed;
+        ActionBot.clickOnElementInIFrame(iframe, streamablePlayBtn, "Play button");
         isPlayed = true;
         return isPlayed;
     }
@@ -106,21 +113,20 @@ public class GamePage extends BasePage {
      * @return - true if played, false if not
      */
     private boolean playViaYoutubePlayer() {
-        By fullScreenBtn = By.cssSelector("button.ytp-fullscreen-button.ytp-button");
-
         boolean isPlayingInYoutube = false;
 
-        By playBtn = By.cssSelector("button.ytp-large-play-button.ytp-button");
         if (ActionBot.isElementDisplayed(iframe, true)) {
-            ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play in Youtube");
-            isPlayingInYoutube = true;
-             if (ActionBot.isElementDisplayedInIframe(iframe, youTubeErrorMsg)) {
-                 //TODO: still not handeled
-                 getErrorMsgIfShown();
-            }
+            ActionBot.clickOnElementInIFrame(iframe, youtubePlayBtn, "Play in Youtube");
+            return true;
+        }
+        ActionBot.switchToIFrameDriver(iframe);
+        if (ActionBot.isElementDisplayed(youTubeErrorMsg, false)) {
+            //TODO: still not handled
+            getErrorMsgIfShown();
         }
         return isPlayingInYoutube;
     }
+
 
     /**
      * This method checks if an error msg is shown when playing a Youtube video
@@ -161,7 +167,7 @@ public class GamePage extends BasePage {
      */
     public boolean showMatchScore() {
         boolean isScoreShown = false;
-        By matchScoreBtn = By.cssSelector("div.spoilerbtn button");
+
         if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
             ActionBot.moveToElement(By.cssSelector("div.score"));
             ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
@@ -182,7 +188,7 @@ public class GamePage extends BasePage {
      */
     public boolean hideMatchScore() {
         boolean isScoreHidden = false;
-        By matchScoreBtn = By.cssSelector("div.spoilerbtn button");
+
         if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
             ActionBot.moveToElement(By.cssSelector("div.score"));
             ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
@@ -204,7 +210,7 @@ public class GamePage extends BasePage {
     public boolean leaveComment() {
         author = homeTeam.toLowerCase() + " fan";
 
-        ActionBot.moveToElement(By.cssSelector("footer"));
+        ActionBot.moveToElement(By.cssSelector("#footer"));
         ActionBot.writeToElement(By.cssSelector("form input#author"), author);
         ActionBot.writeToElement(By.cssSelector("form input#email"), email);
         ActionBot.writeToElement(By.cssSelector("form textarea#comment"), commentToPost);
@@ -222,15 +228,27 @@ public class GamePage extends BasePage {
      */
     private boolean isCommentLeft() {
         boolean isCommentLeft = false;
-        By commentName = By.cssSelector("div#comments ul li cite");
-        String name = ActionBot.getElementText(commentName);
+        try {
+            ActionBot.moveToElement(By.cssSelector("#footer"));
+            String name = ActionBot.getElementText(commentName);
 
-        ActionBot.moveToElement(By.cssSelector("footer"));
-        By commentContent = By.cssSelector("div#comments ul li div.comment-content p");
-        List<WebElement> comments = ActionBot.getAllElements(commentContent);
-        String comment = ActionBot.getElementText(comments.get(1));
-        if (comment.equals(comment) && name.equals(author)) {
-            isCommentLeft = true;
+            ActionBot.moveToElement(By.cssSelector("footer"));
+            List<WebElement> comments = ActionBot.getAllElements(commentContent);
+            String comment = ActionBot.getElementText(comments.get(1));
+            if (comment.equals(comment) && name.equals(author)) {
+                isCommentLeft = true;
+            }
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            CommentSubmissionFailurePage commentSubmissionFailurePage = new CommentSubmissionFailurePage(driver);
+            String errorMsg = commentSubmissionFailurePage.getErrorMsg();
+            report.log(errorMsg, Enums.Status.error);
+            if (errorMsg.equals("Duplicate comment detected; it looks as though you’ve already said that!")) {
+                report.log("It seems like they have found us!", Enums.Status.warning);
+                isCommentLeft = true;
+            }
+            commentSubmissionFailurePage.clickBack();
+        } catch (org.openqa.selenium.TimeoutException ex){
+            report.log("No comment found!", Enums.Status.error);
         }
         return isCommentLeft;
     }

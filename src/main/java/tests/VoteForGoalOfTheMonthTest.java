@@ -4,6 +4,7 @@ import infra.pages.GoalOfTheMonthPage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 public class VoteForGoalOfTheMonthTest extends BaseTest {
 
@@ -15,6 +16,7 @@ public class VoteForGoalOfTheMonthTest extends BaseTest {
 
         report.startLevel("2. Navigate to the 'Goal of the month' page");
         GoalOfTheMonthPage goalOfTheMonthPage = homePage.openGoalOfTheMonthLink();
+        AssertUtils.validatePage(goalOfTheMonthPage, String.valueOf(goalOfTheMonthPage.getClass()));
 
         report.startLevel("3. Vote (if voting is available)");
 //        The expected results depend on the period of the month:

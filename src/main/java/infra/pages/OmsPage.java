@@ -9,6 +9,10 @@ import utils.ActionBot;
 
 public class OmsPage extends BasePage {
 
+    private static final By skipBtn = By.cssSelector("div.videoAdUiSkipIcon");
+    private static final By playBtnSpan = By.cssSelector("span.rmp-i.rmp-i-play");
+    private static final By notFoundError = By.cssSelector("div#notfound");
+
     private WebDriverWait wait;
     //    By iframeLocator = By.cssSelector("div.rmp-content iframe");
     By iframeLocator = By.tagName("iframe");
@@ -21,7 +25,7 @@ public class OmsPage extends BasePage {
     }
 
     public void skipAd() {
-        By skipBtn = By.cssSelector("div.videoAdUiSkipIcon");
+
         WebElement iFrame = driver.findElement(iframeLocator);
         driver.switchTo().frame(iFrame);
         try {
@@ -36,13 +40,16 @@ public class OmsPage extends BasePage {
 
 
     public boolean clickPlay() {
-        By playBtnSpan = By.cssSelector("span.rmp-i.rmp-i-play");
-        if (ActionBot.isElementDisplayed(iframeLocator, false)) {
+
+        if (ActionBot.isElementDisplayed(iframeLocator, true)) {
             try {
                 ActionBot.switchToIFrameDriver(iframeLocator);
-                wait.until(ExpectedConditions.visibilityOfElementLocated(playBtnSpan)).click();
-                report.log("Play button was clicked");
-                isPlayed = true;
+                if (ActionBot.isElementDisplayed(playBtnSpan, true)){
+                    ActionBot.clickOnElement(playBtnSpan, "Play button");
+                    isPlayed = true;
+                }
+//                wait.until(ExpectedConditions.visibilityOfElementLocated(playBtnSpan)).click();
+//                report.log("Play button was clicked");
                 ActionBot.switchToDefaultContent();
             } catch(org.openqa.selenium.NoSuchElementException ex){
                 printErrorMsg();
@@ -54,18 +61,17 @@ public class OmsPage extends BasePage {
     }
 
     public boolean verifyNewTabWasOpen() {
+        boolean isNewTabOpened = false;
         String url = driver.getCurrentUrl();
         report.log("OmsPage was open in browser");
-        if (url.contains("http://oms.veuclips.com/")) {
-            return true;
+        if (url.contains("oms.veuclips.com/")) {
+            isNewTabOpened =  true;
         }
-        else {
-            return false;
-        }
+        return isNewTabOpened;
     }
 
     private void printErrorMsg(){
-        By notFoundError = By.cssSelector("div#notfound");
+
         report.log("Unable to play video");
         if (ActionBot.isElementDisplayed(notFoundError, true)){
             report.log("Error:" + ActionBot.getElementText(By.cssSelector("div#notfound h1")));

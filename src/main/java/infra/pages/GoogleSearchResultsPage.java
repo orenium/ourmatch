@@ -9,7 +9,8 @@ import java.util.List;
 
 public class GoogleSearchResultsPage extends BasePage {
 
-    private By resultsLinks = By.cssSelector(".iUh30 span");
+    public static final By resultsLinks = By.cssSelector(".iUh30 span");
+    private static final By firstResTitle = By.cssSelector("div[id=res] a h3");
 
 
 
@@ -39,7 +40,6 @@ public class GoogleSearchResultsPage extends BasePage {
      */
     public String getFirstTitle() {
 
-        By firstResTitle = By.cssSelector("div[id=res] a h3");
         String title = ActionBot.getElementText(firstResTitle);
         report.log("First title: " + title);
         return title;

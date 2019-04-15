@@ -2,6 +2,7 @@ package utils;
 
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
+import il.co.topq.difido.model.Enums;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,7 +26,6 @@ public class ActionBot {
 
     public ActionBot() {
     }
-
 
     /**
      * This method receive a url and open a broswer with that given url
@@ -85,7 +85,7 @@ public class ActionBot {
             element.click();
             report.log("Element " + elementName + " was clicked");
         } else {
-            report.log("Element isn't display");
+            report.log("Element isn't display", Enums.Status.warning);
         }
     }
 
@@ -312,7 +312,7 @@ public class ActionBot {
     //Switch focus to new tab
     public static void switchToNewTab() {
         ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
+        driver.switchTo().window(tabs.get(tabs.size()-1));
         report.log("Switching to the new tab");
     }
 

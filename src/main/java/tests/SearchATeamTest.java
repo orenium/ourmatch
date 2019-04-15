@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class SearchATeamTest extends BaseTest {
 
-    private HomePage homePage;
+   private HomePage homePage;
 
 
-    @Test(priority =1, dataProvider = "csvParamsProvider")
+    @Test(dataProvider = "csvParamsProvider")
     public void search(String searchTerm) {
         boolean isSearched;
         report.startLevel("1. Navigate to ourmatch homepage");
@@ -69,25 +69,6 @@ public class SearchATeamTest extends BaseTest {
         return params;
     }
 
-
-    @Test (priority = 2)
-    public void noSearchResultsHandling() {
-
-        report.startLevel("1. Navigate to ourmatch homepage");
-        if (homePage == null) {
-            homePage = navigateToHomePage();
-        }
-        report.endLevel();
-
-
-        report.startLevel("2. At the search area, enter some jibrish search term and click the search button");
-        homePage.search("randomSearchTerm");
-        String errorMsg = homePage.getErrorMsg();
-        report.endLevel();
-
-//          Verify that in case of no results, a popper msg is shown ("Apologies, but no results were found.")
-        Assert.assertEquals(errorMsg, "Apologies, but no results were found.");
-    }
 }
 
 

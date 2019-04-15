@@ -9,18 +9,18 @@ import java.util.List;
 
 public class GoalOfTheMonthPage extends BasePage {
 
-    By goalOptions = By.cssSelector("span.css-answer-input.pds-answer-input input");
-    By goallabels = By.cssSelector("span.css-answer-span.pds-answer-span");
+    private static final By goalOptions = By.cssSelector("span.css-answer-input.pds-answer-input input");
+    private static final By goallabels = By.cssSelector("span.css-answer-span.pds-answer-span");
 
-    By scoreDiv = By.cssSelector("div.pds-box-top");
-    By pollMsg = By.cssSelector("div.PDS_Poll div.pds-question-top");
-    By spanAnswerText = By.cssSelector("span.pds-answer-text");
-    By spanAnswerPer = By.cssSelector("span.pds-feedback-per");
-    By spanAnswerVotes = By.cssSelector("span.pds-feedback-votes");
-    By divTotalVotes = By.cssSelector("div.pds-total-votes");
+    private static final By scoreDiv = By.cssSelector("div.pds-box-top");
+    private static final By pollMsg = By.cssSelector("div.PDS_Poll div.pds-question-top");
+    private static final By spanAnswerText = By.cssSelector("span.pds-answer-text");
+    private static final By spanAnswerPer = By.cssSelector("span.pds-feedback-per");
+    private static final By spanAnswerVotes = By.cssSelector("span.pds-feedback-votes");
+    private static final By divTotalVotes = By.cssSelector("div.pds-total-votes");
 
-    By iframe = By.tagName("iframe");
-    By voteBtn = By.cssSelector("a#pd-vote-button10289386 span");
+    private static final By iframe = By.tagName("iframe");
+    private static final By voteBtn = By.cssSelector("a#pd-vote-button10289386 span");
 
     public static boolean isClosedForVoting = false;
 
@@ -34,7 +34,7 @@ public class GoalOfTheMonthPage extends BasePage {
      * @return - True if vote was made, false if not
      */
     public boolean vote() {
-        boolean isVoted = false;
+        boolean isVoted;
 
         int index = ActionBot.getRandomIndex(ActionBot.getTextFromElementList(goallabels).size());
         ActionBot.moveToElement(By.cssSelector("div.CSS_Poll.PDS_Poll"));

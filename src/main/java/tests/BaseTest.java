@@ -48,7 +48,7 @@ public abstract class BaseTest {
         }
     }
 
-    public static HomePage navigateToHomePage(){
+    public static HomePage navigateToHomePage() {
         ActionBot.navigateToURL(siteUrl);
         return new HomePage(driver);
     }
@@ -59,26 +59,42 @@ public abstract class BaseTest {
 
     /**
      * This methods take a screenshot
+     *
      * @param description - The description to add to the screenshot
      * @throws Exception
      */
-    public static void takeScreenShot(String description) throws Exception{
+    public static void takeScreenShot(String description) throws Exception {
 
-        if (driver != null){
-            File screenShotFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            report.addImage(screenShotFile,description);
+        if (driver != null) {
+            File screenShotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            report.addImage(screenShotFile, description);
         }
     }
 
 
-    // Run after ALL tests!
-    @AfterSuite
-    public void afterAllTests() {
+    // Run after test class!
+    @AfterClass
+    public void afterClassTest() {
 
-        if (MainConfig.closeBrowserAtSuiteTestEnd) {
+        if (MainConfig.closeBrowserAtClassTestEnd) {
             driver.close();
         }
     }
 
+    // Run after All tests!
+    @AfterSuite
+    public void afterAllTests() {
 
+        if (driver != null) {
+            if (MainConfig.closeBrowserAtSuiteTestEnd) {
+                for (String handle : driver.getWindowHandles()) {
+                    driver.switchTo().window(handle);
+                    driver.close();
+                }
+            }
+        }
+    }
 }
+
+
+

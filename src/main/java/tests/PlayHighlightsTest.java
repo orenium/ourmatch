@@ -4,6 +4,7 @@ import infra.pages.GamePage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 public class PlayHighlightsTest extends BaseTest {
 
@@ -20,11 +21,12 @@ public class PlayHighlightsTest extends BaseTest {
 
         report.startLevel("2. Select a random match");
         gamePage = homePage.selectRandomItem();
+//        gamePage = homePage.selectMatchByIndex(16);
         report.endLevel();
 
         report.startLevel("3. Click on the 'Click to see the score' button");
         boolean isScoreShowed = gamePage.showMatchScore();
-        Assert.assertTrue(isScoreShowed, "Failed to show match score");
+        AssertUtils.assertTrue(isScoreShowed, "Failed to show match score");
         report.endLevel();
 
         report.startLevel("4. Play highlights");

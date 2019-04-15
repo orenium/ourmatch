@@ -5,6 +5,7 @@ import infra.pages.GoogleSearchResultsPage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 
 public class GoogleSearchTest extends BaseTest {
@@ -43,6 +44,6 @@ public class GoogleSearchTest extends BaseTest {
         report.endLevel();
 
         // Verify ourmatch homepage is shown
-        Assert.assertNotNull(homePage, "link validation test failed");
+        AssertUtils.validatePage(homePage, String.valueOf(homePage.getClass()));
     }
 }

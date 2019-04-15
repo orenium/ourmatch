@@ -9,9 +9,11 @@ import java.util.Set;
 
 public class TwitterPopUpPage extends BasePage {
 
-    private final String PROFILE_NAME = "Ourmatch.net";
+    private static final String PROFILE_NAME = "Ourmatch.net";
     private static String parentWindowHandler;
     private static String subWindowHandler;
+    private static final By mainDiv = By.cssSelector("div#bd");
+    private static final By profileName = By.cssSelector("div.profile.summary h2");
 
 
     public TwitterPopUpPage(WebDriver driver) {
@@ -26,9 +28,8 @@ public class TwitterPopUpPage extends BasePage {
      * @return - True is shown, false if not
      */
     public boolean isPopupShown() {
-        By mainDiv = By.cssSelector("div#bd");
-        boolean isDisplayed = false;
 
+        boolean isDisplayed;
         Set<String> handles = driver.getWindowHandles(); // get all window handles
         Iterator<String> iterator = handles.iterator();
         while (iterator.hasNext()) {
@@ -44,7 +45,7 @@ public class TwitterPopUpPage extends BasePage {
     }
 
     public boolean isValidProfile() {
-        By profileName = By.cssSelector("div.profile.summary h2");
+
         ActionBot.switchDriverToWindow(subWindowHandler); // switch to popup window
         String profile = ActionBot.getElementText(profileName);
         report.log("Popup profile name: " + profile);
