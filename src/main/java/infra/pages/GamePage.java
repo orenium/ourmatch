@@ -161,11 +161,11 @@ public class GamePage extends BasePage {
 
 
     /**
-     * This method clicks the "show match score" button
+     * This method toggle the "show match score" button
      *
      * @return - True if scores are shown, false if not
      */
-    public boolean showMatchScore() {
+    public boolean toggleMatchScore() {
         boolean isScoreShown = false;
 
         if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
@@ -176,29 +176,11 @@ public class GamePage extends BasePage {
             if (vsText.equals("FT")) {
                 isScoreShown = true;
                 report.log("Match score: " + ActionBot.getElementText(By.cssSelector("div.home-score.spoiler")) + " : " + ActionBot.getElementText(By.cssSelector("div.away-score.spoiler")));
+            } else if (ActionBot.getElementText(By.cssSelector("div.vs.spoilerfree")).equals("-")){
+                report.log("hiding match score");
             }
         }
         return isScoreShown;
-    }
-
-    /**
-     * This method hide the match score by the score toggle button
-     *
-     * @return - True if scores are hide, false if shown
-     */
-    public boolean hideMatchScore() {
-        boolean isScoreHidden = false;
-
-        if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
-            ActionBot.moveToElement(By.cssSelector("div.score"));
-            ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
-            ActionBot.waitForElementToBeDisplayed(spoilerDiv);
-            String vsText = ActionBot.getElementText(spoilerDiv);
-            if (vsText.equals("-")) {
-                isScoreHidden = true;
-            }
-        }
-        return isScoreHidden;
     }
 
 

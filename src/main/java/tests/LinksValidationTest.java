@@ -3,6 +3,7 @@ package tests;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 public class LinksValidationTest extends BaseTest {
 
@@ -18,7 +19,7 @@ public class LinksValidationTest extends BaseTest {
         homePage.setLeaguesMap();
         isLinksValid = homePage.mainLeaguesLinksValidation(homePage.leaguesAndLinksMap);
         report.endLevel();
-        Assert.assertTrue(isLinksValid, "leagues links validation failed");
+        AssertUtils.assertTrue(isLinksValid,"Leagues links validation successfully passed" ,"Leagues links validation failed", true);
     }
 
 

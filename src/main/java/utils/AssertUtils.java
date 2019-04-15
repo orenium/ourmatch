@@ -22,7 +22,7 @@ public class AssertUtils {
 
         try {
             Assert.assertEquals(actual, expected, message);
-            report.log(message + "; Both are equal to: " + expected + " - OK");
+            report.log(message, Status.success);
         } catch (AssertionError e) {
 
             report.logHtml(e.getMessage(), null, Status.failure);
@@ -44,9 +44,7 @@ public class AssertUtils {
             Assert.assertTrue(condition, message);
             report.log(message + " - OK");
         } catch (AssertionError e) {
-
             report.logHtml(e.getMessage(), null, Status.failure);
-
             if (!softAssert) {
                 throw e;
             }
@@ -56,18 +54,15 @@ public class AssertUtils {
     public static void assertTrue(boolean condition, String successMsg, String failureMsg, boolean softAssert) {
         try {
             Assert.assertTrue(condition, successMsg);
-            report.log(successMsg, Status.success);
         } catch (AssertionError e) {
             report.log(failureMsg, Status.failure);
-            report.logHtml(e.getMessage(), null, Status.failure);
-
             if (!softAssert) {
                 throw e;
             }
         }
     }
 
-
+    //TODO: fix this verification to other assertInPage
     public static void validatePage(BasePage basePage, String expectedPage) {
         String actualPageClassName = basePage.getClass().toString();
         if (actualPageClassName.equals(expectedPage)) {

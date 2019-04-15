@@ -4,11 +4,13 @@ import infra.pages.GamePage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 public class ToggleMatchScoreTest extends BaseTest {
 
-    private HomePage homePage;
-    private GamePage gamePage;
+    private static HomePage homePage;
+    private static GamePage gamePage;
+    private static boolean isScoreShowed;
 
     @Test (priority = 1)
     public void showMatchScore(){
@@ -22,9 +24,9 @@ public class ToggleMatchScoreTest extends BaseTest {
 
         report.startLevel("3. Click on the 'Click to see the score' button");
 //      Expected result: Verify text is "FT" at the score once clicked
-        boolean isScoreShowed = gamePage.showMatchScore();
+        isScoreShowed = gamePage.toggleMatchScore();
         report.endLevel();
-        Assert.assertTrue(isScoreShowed, "Failed to show match score");
+        AssertUtils.assertTrue(isScoreShowed, "Succesfullfy showing match score","Failed to show match score", true);
     }
 
     @Test(priority = 2)
@@ -40,9 +42,9 @@ public class ToggleMatchScoreTest extends BaseTest {
         }
         report.startLevel("3. Click on the 'hide the score' button");
 //      Expected result: Verify text is "-" at the score once clicked
-        boolean isScoreShowed = gamePage.hideMatchScore();
+        isScoreShowed = gamePage.toggleMatchScore();
         report.endLevel();
-        Assert.assertFalse(isScoreShowed, "Failed to hide match score");
+        AssertUtils.assertTrue(!isScoreShowed,"Hide score test pass", "Failed to hide match score",true);
     }
 
 

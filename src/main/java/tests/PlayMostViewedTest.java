@@ -4,6 +4,7 @@ import infra.pages.GamePage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 public class PlayMostViewedTest extends BaseTest {
 
@@ -27,14 +28,14 @@ public class PlayMostViewedTest extends BaseTest {
         report.endLevel();
 
         report.startLevel("3. Expose match final score");
-        isScoreShowed = gamePage.showMatchScore();
+        isScoreShowed = gamePage.toggleMatchScore();
         report.endLevel();
-        Assert.assertTrue(isScoreShowed, " Failed to show match score");
+        AssertUtils.assertTrue(isScoreShowed,"Match score is shown", " Failed to show match score", true);
 
         report.startLevel("4. Play match highlights");
         isPlayed = gamePage.playHighlights();
         report.endLevel();
-        Assert.assertTrue(isPlayed, " Failed to play match highlights");
+        AssertUtils.assertTrue(isPlayed,"Most viewed game was successfully played" , " Failed to play match highlights", true);
 
     }
 

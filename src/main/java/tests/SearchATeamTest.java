@@ -4,6 +4,7 @@ import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import utils.AssertUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -35,10 +36,10 @@ public class SearchATeamTest extends BaseTest {
         Assert.assertTrue(isSearched, " failed to search " + searchTerm);
         if (isSearched) {
             // Verify that for each term, the search term is shown at the URL right after to the "s="
-            Assert.assertTrue(homePage.validateSearchInURL(searchTerm), "fail to find " + searchTerm + " at the url");
+            AssertUtils.assertTrue(homePage.validateSearchInURL(searchTerm),"'"+ searchTerm+"' was found in url", "Fail to find " + searchTerm + " at the url", true);
 
             // Verify that for each term, the search term is shown at least 3 times at the search results
-            Assert.assertTrue(homePage.validateSearchByResults(searchTerm), "fail to find " + searchTerm + " at the search results");
+            AssertUtils.assertTrue(homePage.validateSearchByResults(searchTerm),searchTerm + " was found at the search results ", "Fail to find " + searchTerm + " at the search results", true);
         }
     }
 

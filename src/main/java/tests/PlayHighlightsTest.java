@@ -2,15 +2,16 @@ package tests;
 
 import infra.pages.GamePage;
 import infra.pages.HomePage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.AssertUtils;
 
 public class PlayHighlightsTest extends BaseTest {
 
 
-    HomePage homePage;
-    GamePage gamePage;
+    private static HomePage homePage;
+    private static GamePage gamePage;
+    private static boolean isScoreShowed;
+    private static boolean isPlayed;
 
     @Test
     public void playRandomHighLights() throws InterruptedException {
@@ -25,7 +26,7 @@ public class PlayHighlightsTest extends BaseTest {
         report.endLevel();
 
         report.startLevel("3. Click on the 'Click to see the score' button");
-        boolean isScoreShowed = gamePage.showMatchScore();
+         isScoreShowed = gamePage.toggleMatchScore();
         AssertUtils.assertTrue(isScoreShowed, "Failed to show match score");
         report.endLevel();
 
@@ -38,9 +39,9 @@ public class PlayHighlightsTest extends BaseTest {
 //          2. Video source contains 'oms.videostreamlet.net' - Verify video is playing
 //        - Scenario C - Streamable is the video source
 //        Expected result: Verify video is played.
-        boolean isPlayed = gamePage.playHighlights();
+         isPlayed = gamePage.playHighlights();
         report.endLevel();
-        Assert.assertTrue(isPlayed, "playRandomHighLights");
+        AssertUtils.assertTrue(isPlayed, "Play highlights test passed successfully" ,"Play highlights test failed", true);
     }
 
 
