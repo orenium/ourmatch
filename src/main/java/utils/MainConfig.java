@@ -10,7 +10,7 @@ public class MainConfig {
 
     public static Browsers webDriverType;
     public static boolean closeBrowserAtClassTestEnd;
-    public static boolean closeBrowserAtSuiteTestEnd;
+    public static boolean closeBrowserAtTestsEnd;
     public static int webDriverImplicitWaitInSeconds;
     public static String baseUrl;
     public static String email;
@@ -24,8 +24,8 @@ public class MainConfig {
         prop.load(input);
 
         webDriverType = Browsers.valueOf(prop.getProperty("webDriverType"));
-        closeBrowserAtClassTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtTestEnd"));
-        closeBrowserAtSuiteTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtSuiteTestEnd"));
+//        closeBrowserAtClassTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtClassTestEnd"));
+        closeBrowserAtTestsEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtTestsEnd"));
         webDriverImplicitWaitInSeconds = Integer.parseInt(prop.getProperty("webDriverImplicitWaitInSeconds"));
         baseUrl = prop.getProperty("siteURL");
         email = prop.getProperty("email");

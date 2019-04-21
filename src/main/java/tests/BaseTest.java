@@ -26,6 +26,10 @@ public abstract class BaseTest {
     protected static WebDriver driver;
     protected static String siteUrl = "https://ourmatch.net/videos/";
 
+    public static WebDriver getDriver() {
+        return driver;
+    }
+
     // Run before ALL tests!
     @BeforeClass
     public void setup() throws IOException {
@@ -35,17 +39,8 @@ public abstract class BaseTest {
             driver = WebDriverFactory.getDriver(MainConfig.webDriverType);
         }
         report = ReportManager.getInstance();
-    }
 
-
-    // Run after ALL tests classes!
-    @AfterClass
-    public void afterAllTestsClasses() throws Exception {
-        takeScreenShot("Browser state when test ends");
-
-        if (MainConfig.closeBrowserAtClassTestEnd) {
-//            driver.close();
-        }
+        System.getProperty("os.name");
     }
 
     public static HomePage navigateToHomePage() {
@@ -53,9 +48,7 @@ public abstract class BaseTest {
         return new HomePage(driver);
     }
 
-    public static WebDriver getDriver() {
-        return driver;
-    }
+
 
     /**
      * This methods take a screenshot
@@ -71,25 +64,30 @@ public abstract class BaseTest {
         }
     }
 
-
-    // Run after test class!
+    // Run after ALL tests classes!
     @AfterClass
-    public void afterClassTest() {
-
-        if (MainConfig.closeBrowserAtClassTestEnd) {
-            driver.close();
-        }
+    public void afterAllTestsClasses() throws Exception {
+        takeScreenShot("Browser state when test ends");
     }
+
 
     // Run after All tests!
     @AfterSuite
     public void afterAllTests() {
-
         if (driver != null) {
-            if (MainConfig.closeBrowserAtSuiteTestEnd) {
-                for (String handle : driver.getWindowHandles()) {
-                    driver.switchTo().window(handle);
+            if (MainConfig.closeBrowserAtTestsEnd) {
+                int openTabs = driver.getWindowHandles().size();
+                if (openTabs > 1) {
+                    for (String handle : driver.getWindowHandles()) {
+                        driver.switchTo().window(handle);
+                        report.log("Closing browser");
+                        driver.close();
+                    }
+                } else if (openTabs == 1) {
+                    report.log("Closing browser");
                     driver.close();
+                } else {
+                    report.log("All tabs are already closed");
                 }
             }
         }
