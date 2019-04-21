@@ -24,11 +24,11 @@ public class WebDriverFactory {
 
         switch (browser) {
             case CHROME:
-                System.setProperty("webdriver.chrome.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/resources/webdrivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/chromedriver");
                 driver = new ChromeDriver();
                 break;
             case FIREFOX:
-                System.setProperty("webdriver.gecko.driver", "/Users/obroshi/Documents/Automation_course/ourmatch/src/main/resources/webdrivers/geckodriver");
+                System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/geckodriver");
                 driver = new FirefoxDriver();
                 break;
         }
