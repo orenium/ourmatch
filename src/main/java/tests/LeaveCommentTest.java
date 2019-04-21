@@ -2,7 +2,6 @@ package tests;
 
 import infra.pages.GamePage;
 import infra.pages.HomePage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.AssertUtils;
 
@@ -24,7 +23,7 @@ public class LeaveCommentTest extends BaseTest {
         report.endLevel();
 
         // Verify that comment was left by comment's author and comment's content
-        AssertUtils.assertTrue(commentLeft, "Comment was left successfully","Failed to leave a comment", true);
+        AssertUtils.assertTrue(commentLeft, "Comment was left successfully", "Failed to leave a comment", true);
     }
 
 }

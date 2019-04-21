@@ -1,7 +1,6 @@
 package tests;
 
 import infra.pages.HomePage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.AssertUtils;
 
@@ -20,7 +19,10 @@ public class CloseAcceptCookiesPopupTest extends BaseTest {
         report.endLevel();
 
         // Verify popup closed and no longer visible
-        AssertUtils.assertTrue(isClosed, "Close Accept Cookies Popup was successfully closed","Fail to close cookies dialog", true );
+        AssertUtils.assertTrue(isClosed,
+                "Close Accept Cookies Popup was successfully closed",
+                "Fail to close cookies dialog",
+                true);
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class GoalOfTheMonthPage extends BasePage {
 
     private static final By goalOptions = By.cssSelector("span.css-answer-input.pds-answer-input input");
-    private static final By goallabels = By.cssSelector("span.css-answer-span.pds-answer-span");
+    public static final By goalLabels = By.cssSelector("span.css-answer-span.pds-answer-span");
 
     private static final By scoreDiv = By.cssSelector("div.pds-box-top");
     private static final By pollMsg = By.cssSelector("div.PDS_Poll div.pds-question-top");
@@ -36,11 +36,11 @@ public class GoalOfTheMonthPage extends BasePage {
     public boolean vote() {
         boolean isVoted;
 
-        int index = ActionBot.getRandomIndex(ActionBot.getTextFromElementList(goallabels).size());
+        int index = ActionBot.getRandomIndex(ActionBot.getTextFromElementList(goalLabels).size());
         ActionBot.moveToElement(By.cssSelector("div.CSS_Poll.PDS_Poll"));
         ActionBot.executeJavaScript("var list = document.querySelectorAll('span.css-answer-input.pds-answer-input input');\n" +
                 "list[" + index + "].click();");
-        report.log(ActionBot.getTextFromElementList(goallabels).get(index) + " was selected");
+        report.log(ActionBot.getTextFromElementList(goalLabels).get(index) + " was selected");
         ActionBot.moveToElement(By.cssSelector("div.pre-gotm"));
         ActionBot.clickOnElement(voteBtn, "Vote button");
         isVoted = true;

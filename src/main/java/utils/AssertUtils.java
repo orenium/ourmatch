@@ -53,7 +53,8 @@ public class AssertUtils {
 
     public static void assertTrue(boolean condition, String successMsg, String failureMsg, boolean softAssert) {
         try {
-            Assert.assertTrue(condition, successMsg);
+            Assert.assertTrue(condition, failureMsg);
+            report.log(successMsg, Status.success);
         } catch (AssertionError e) {
             report.log(failureMsg, Status.failure);
             if (!softAssert) {
@@ -62,7 +63,7 @@ public class AssertUtils {
         }
     }
 
-    //TODO: fix this verification to other assertInPage
+
     public static void validatePage(BasePage basePage, String expectedPage) {
         String actualPageClassName = basePage.getClass().toString();
         if (actualPageClassName.equals(expectedPage)) {
@@ -78,6 +79,5 @@ public class AssertUtils {
             report.log("Unable to verify page", Status.failure);
             Assert.assertTrue(false);
         }
-
     }
 }

@@ -13,7 +13,6 @@ public class MainConfig {
     public static boolean closeBrowserAtSuiteTestEnd;
     public static int webDriverImplicitWaitInSeconds;
     public static String baseUrl;
-    public static String searchTerm;
     public static String email;
     public static String comment;
 
@@ -29,7 +28,6 @@ public class MainConfig {
         closeBrowserAtSuiteTestEnd = Boolean.parseBoolean(prop.getProperty("closeBrowserAtSuiteTestEnd"));
         webDriverImplicitWaitInSeconds = Integer.parseInt(prop.getProperty("webDriverImplicitWaitInSeconds"));
         baseUrl = prop.getProperty("siteURL");
-        searchTerm = prop.getProperty("searchTerm");
         email = prop.getProperty("email");
         comment = prop.getProperty("comment");
 

@@ -5,6 +5,7 @@ import infra.pages.GoogleSearchResultsPage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.ActionBot;
 import utils.AssertUtils;
 
 
@@ -41,9 +42,13 @@ public class GoogleSearchTest extends BaseTest {
 
         report.startLevel("3. Click on first link");
         homePage = resultsPage.clickFirstLink();
-        report.endLevel();
 
         // Verify ourmatch homepage is shown
-        AssertUtils.validatePage(homePage, String.valueOf(homePage.getClass()));
+        AssertUtils.assertTrue(
+                ActionBot.isElementDisplayed(HomePage.searchBtn, false),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
+        report.endLevel();
     }
 }

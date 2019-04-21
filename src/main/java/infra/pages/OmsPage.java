@@ -9,12 +9,10 @@ import utils.ActionBot;
 
 public class OmsPage extends BasePage {
 
-    private static final By skipBtn = By.cssSelector("div.videoAdUiSkipIcon");
     private static final By playBtnSpan = By.cssSelector("span.rmp-i.rmp-i-play");
     private static final By notFoundError = By.cssSelector("div#notfound");
 
     private WebDriverWait wait;
-    //    By iframeLocator = By.cssSelector("div.rmp-content iframe");
     By iframeLocator = By.tagName("iframe");
     public static boolean isPlayed = false;
 
@@ -24,21 +22,10 @@ public class OmsPage extends BasePage {
         wait = new WebDriverWait(driver, 30);
     }
 
-    public void skipAd() {
-
-        WebElement iFrame = driver.findElement(iframeLocator);
-        driver.switchTo().frame(iFrame);
-        try {
-            wait.until(ExpectedConditions.elementToBeClickable(skipBtn)).click();
-            report.log("Skipp ad button was clicked");
-            ActionBot.switchToDefaultContent();
-        } catch (org.openqa.selenium.TimeoutException ex) {
-            ActionBot.switchToDefaultContent();
-            clickPlay();
-        }
-    }
-
-
+    /**
+     * This method starts playing highlights by clicking the play button
+     * @return - True if clicked, false if not
+     */
     public boolean clickPlay() {
 
         if (ActionBot.isElementDisplayed(iframeLocator, true)) {
@@ -60,6 +47,10 @@ public class OmsPage extends BasePage {
         return isPlayed;
     }
 
+    /**
+     * This methods verified that a new tab was open
+     * @return - True if a new tab was open, false if not
+     */
     public boolean verifyNewTabWasOpen() {
         boolean isNewTabOpened = false;
         String url = driver.getCurrentUrl();
@@ -70,6 +61,9 @@ public class OmsPage extends BasePage {
         return isNewTabOpened;
     }
 
+    /**
+     * This method prints the error msg to log
+     */
     private void printErrorMsg(){
 
         report.log("Unable to play video");

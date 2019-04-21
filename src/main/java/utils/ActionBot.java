@@ -23,6 +23,7 @@ public class ActionBot {
     private static WebDriver driver = BaseTest.getDriver();
     public static Actions action = new Actions(driver);
     private static WebDriverWait wait = new WebDriverWait(driver, MainConfig.webDriverImplicitWaitInSeconds);
+    public static WebElement element;
 
     public ActionBot() {
     }
@@ -45,7 +46,7 @@ public class ActionBot {
      * @param text           - The text to insert
      */
     public static void writeToElement(By elementLocator, String text) {
-        WebElement element = driver.findElement(elementLocator);
+        element = driver.findElement(elementLocator);
 
         if (element.isDisplayed()) {
             element.sendKeys(text);
@@ -63,7 +64,7 @@ public class ActionBot {
      * @param elementName    - Element's name (for logging)
      */
     public static void clickOnElement(By elementLocator, String elementName) {
-        WebElement element = driver.findElement(elementLocator);
+        element = driver.findElement(elementLocator);
 
         if (element.isDisplayed()) {
             element.click();
@@ -95,7 +96,7 @@ public class ActionBot {
      * @param elementLocator - The element to verify with
      */
     public static void clickEnterToSearch(By elementLocator) {
-        WebElement element = driver.findElement(elementLocator);
+        element = driver.findElement(elementLocator);
 
         if (element.isDisplayed()) {
             element.sendKeys(Keys.ENTER);
@@ -177,10 +178,10 @@ public class ActionBot {
      * @param byLocator - The element's By locator
      */
     public static void moveToElement(By byLocator) {
-        WebElement webElement = driver.findElement(byLocator);
+        element = driver.findElement(byLocator);
         try {
-            action.moveToElement(webElement).perform();
-            wait.until(ExpectedConditions.visibilityOf(webElement));
+            action.moveToElement(element).perform();
+            wait.until(ExpectedConditions.visibilityOf(element));
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             report.log(ex.getMessage());
         }
@@ -262,7 +263,7 @@ public class ActionBot {
         String text = "";
         try {
             if (isElementDisplayedInIframe(iFrameLocator, elementLocator)) {
-                WebElement element = driver.findElement(elementLocator);
+                element = driver.findElement(elementLocator);
                 text = element.getText();
             }
         } catch (org.openqa.selenium.NoSuchElementException ex) {
@@ -286,7 +287,6 @@ public class ActionBot {
             list = new ArrayList();
             for (WebElement element : elements) {
                 list.add(element.getText());
-//                report.log(element.getText());
             }
         }
         return list;
@@ -346,7 +346,7 @@ public class ActionBot {
      * @param byLocator - The element's By locator
      */
     public static void doubleClick(By byLocator) {
-        WebElement element = driver.findElement(byLocator);
+        element = driver.findElement(byLocator);
         action.doubleClick(element).perform();
     }
 
@@ -389,8 +389,6 @@ public class ActionBot {
      */
     public static void clickOnElementInIFrame(By iFrameLocator, By elementInIFrame, String elementName) {
         switchToIFrameDriver(iFrameLocator);
-//        WebElement element = driver.findElement(elementInIFrame);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(elementInIFrame)).click();
         wait.until(ExpectedConditions.elementToBeClickable(elementInIFrame)).click();
         report.log("element " + elementName + " (inside iframe) was clicked");
         switchToDefaultContent();
@@ -438,6 +436,11 @@ public class ActionBot {
     }
 
 
+    /**
+     * This method generates a random string
+     * @param stringLength - The string length
+     * @return - The generated string
+     */
     public static String generateRandomString(int stringLength) {
         String generatedString = "";
         Random random = new Random();
@@ -447,6 +450,10 @@ public class ActionBot {
         return generatedString;
     }
 
+    /**
+     * This method swith the webDriver to a new browser window
+     * @param window - The window to switch to
+     */
     public static void switchDriverToWindow(String window) {
         driver.switchTo().window(window);
     }

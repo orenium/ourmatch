@@ -44,6 +44,10 @@ public class TwitterPopUpPage extends BasePage {
         return isDisplayed;
     }
 
+    /**
+     * This method validate that the twitter popup account is actually a ourmatch acount
+     * @return - True if profile is valid, false if not.
+     */
     public boolean isValidProfile() {
 
         ActionBot.switchDriverToWindow(subWindowHandler); // switch to popup window

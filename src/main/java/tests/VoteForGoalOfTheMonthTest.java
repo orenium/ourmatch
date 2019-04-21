@@ -3,10 +3,12 @@ package tests;
 import infra.pages.GoalOfTheMonthPage;
 import infra.pages.HomePage;
 import org.testng.annotations.Test;
+import utils.ActionBot;
 import utils.AssertUtils;
 
 public class VoteForGoalOfTheMonthTest extends BaseTest {
 
+    private static GoalOfTheMonthPage goalOfTheMonthPage;
 
     @Test
     public void vote() {
@@ -15,8 +17,13 @@ public class VoteForGoalOfTheMonthTest extends BaseTest {
         report.endLevel();
 
         report.startLevel("2. Navigate to the 'Goal of the month' page");
-        GoalOfTheMonthPage goalOfTheMonthPage = homePage.openGoalOfTheMonthLink();
-        AssertUtils.validatePage(goalOfTheMonthPage, String.valueOf(goalOfTheMonthPage.getClass()));
+        goalOfTheMonthPage = homePage.openGoalOfTheMonthLink();
+        AssertUtils.assertTrue(
+                ActionBot.isElementDisplayed(GoalOfTheMonthPage.goalLabels, false),
+                "Goal of the month page was verified",
+                "Failed to verify goal of the match page",
+                true);
+//
         report.endLevel();
 
         report.startLevel("3. Vote (if voting is available)");

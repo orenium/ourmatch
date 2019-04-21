@@ -14,7 +14,9 @@ public class GoogleHomePage extends BasePage {
         super(driver);
     }
 
-
+    /**
+     * This method navigates to gGoogle's home page
+     */
      public void openGoogleHomePage(){
          ActionBot.navigateToURL(GOOGLE_HOMEPAGE_URL);
      }

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 public class HomePage extends BasePage {
 
-    //    public static List<WebElement> iframes;
     public static HashMap<String, String> leaguesAndLinksMap;
     private static final By homeTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnameh");
     private static final By awayTeam = By.cssSelector("div.match-thumb-info div.match-thumb-teamnamea");
@@ -20,7 +19,7 @@ public class HomePage extends BasePage {
     private static final By leaguesTitles = By.cssSelector("li.popular-leagues-list ul li.hover-tp a");
     private static final By leaguesLinks = By.cssSelector("li.popular-leagues-list ul li a");
     private static final By searchInput = By.cssSelector("input.search-text");
-    private static final By searchBtn = By.className("search-submit");
+    public static final By searchBtn = By.className("search-submit");
     private static final By viewsLocator = By.cssSelector("span.views i.count");
 
     private static By videosOnPage;
@@ -100,6 +99,10 @@ public class HomePage extends BasePage {
         return isSearched;
     }
 
+    /**
+     * This method return as error msg
+     * @return - The error msg
+     */
     public String getErrorMsg() {
         By errorMsgDiv = By.cssSelector("div.error-msg");
         String msg = ActionBot.getElementText(errorMsgDiv);
@@ -162,6 +165,11 @@ public class HomePage extends BasePage {
         return isShownInResults;
     }
 
+    /**
+     * This method selects (clicks) on a specific match by given index
+     * @param index - The index number
+     * @return - New GamePage
+     */
     public GamePage selectMatchByIndex(int index) {
         List<WebElement> matches = ActionBot.getAllElements(videosOnPage);
         if (matches.size() > 0) {
