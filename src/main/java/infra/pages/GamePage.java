@@ -121,7 +121,6 @@ public class GamePage extends BasePage {
         }
         ActionBot.switchToIFrameDriver(iframe);
         if (ActionBot.isElementDisplayed(youTubeErrorMsg, false)) {
-            //TODO: still not handled
             getErrorMsgIfShown();
         }
         return isPlayingInYoutube;

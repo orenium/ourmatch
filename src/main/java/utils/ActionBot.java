@@ -231,7 +231,7 @@ public class ActionBot {
     public static String getElementText(By byLocator) {
         String text = "";
         try {
-            if (isElementDisplayed(byLocator,true)) {
+            if (isElementDisplayed(byLocator, true)) {
                 text = driver.findElement(byLocator).getText();
             }
         } catch (org.openqa.selenium.NoSuchElementException ex) {
@@ -312,7 +312,7 @@ public class ActionBot {
     //Switch focus to new tab
     public static void switchToNewTab() {
         ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(tabs.size()-1));
+        driver.switchTo().window(tabs.get(tabs.size() - 1));
         report.log("Switching to the new tab");
     }
 
@@ -438,6 +438,7 @@ public class ActionBot {
 
     /**
      * This method generates a random string
+     *
      * @param stringLength - The string length
      * @return - The generated string
      */
@@ -452,6 +453,7 @@ public class ActionBot {
 
     /**
      * This method swith the webDriver to a new browser window
+     *
      * @param window - The window to switch to
      */
     public static void switchDriverToWindow(String window) {
