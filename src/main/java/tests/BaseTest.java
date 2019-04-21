@@ -33,7 +33,7 @@ public abstract class BaseTest {
     // Run before ALL tests!
     @BeforeClass
     public void setup() throws IOException {
-        MainConfig.initFromFile("src/main/resources/config/MainConfig.properties");
+        MainConfig.initFromFile("src/main/resources/ourmatch.properties");
 
         if (driver == null) {
             driver = WebDriverFactory.getDriver(MainConfig.webDriverType);
