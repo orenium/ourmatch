@@ -7,7 +7,6 @@ import utils.AssertUtils;
 
 public class LeaveCommentTest extends BaseTest {
 
-
     @Test
     public void leaveAComment() {
         report.startLevel("1. Navigate to ourmatch homepage");
@@ -19,11 +18,11 @@ public class LeaveCommentTest extends BaseTest {
         report.endLevel();
 
         report.startLevel("3. Leave a comment");
-        boolean commentLeft = gamePage.leaveComment();
+        boolean isCommentVerified = gamePage.leaveComment();
         report.endLevel();
 
         // Verify that comment was left by comment's author and comment's content
-        AssertUtils.assertTrue(commentLeft, "Comment was left successfully", "Failed to leave a comment", true);
+        AssertUtils.assertTrue(isCommentVerified, "Comment was left successfully", "Failed to leave a comment", true);
     }
 
 }
