@@ -6,8 +6,9 @@ import org.testng.annotations.Test;
 import utils.AssertUtils;
 
 public class FollowOnTwitterTest extends BaseTest {
-    HomePage homePage;
-    TwitterPopUpPage twitterPopUpPage;
+
+    private static HomePage homePage;
+    private static TwitterPopUpPage twitterPopUpPage;
 
 
     @Test
@@ -15,6 +16,12 @@ public class FollowOnTwitterTest extends BaseTest {
 
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
         report.endLevel();
 
         report.startLevel("2. Click on the 'Follow on Twitter' button");

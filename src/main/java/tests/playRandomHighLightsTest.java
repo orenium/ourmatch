@@ -5,7 +5,7 @@ import infra.pages.HomePage;
 import org.testng.annotations.Test;
 import utils.AssertUtils;
 
-public class PlayHighlightsTest extends BaseTest {
+public class playRandomHighLightsTest extends BaseTest {
 
 
     private static HomePage homePage;
@@ -18,6 +18,13 @@ public class PlayHighlightsTest extends BaseTest {
 
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
+
         report.endLevel();
 
         report.startLevel("2. Select a random match");
@@ -26,8 +33,8 @@ public class PlayHighlightsTest extends BaseTest {
         report.endLevel();
 
         report.startLevel("3. Click on the 'Click to see the score' button");
-         isScoreShowed = gamePage.toggleMatchScore();
-        AssertUtils.assertTrue(isScoreShowed, "Failed to show match score");
+        isScoreShowed = gamePage.toggleMatchScore();
+        AssertUtils.assertTrue(isScoreShowed, "Match score shown", "Failed to toggle match Score", true);
         report.endLevel();
 
         report.startLevel("4. Play highlights");
@@ -39,9 +46,9 @@ public class PlayHighlightsTest extends BaseTest {
 //          2. Video source contains 'oms.videostreamlet.net' - Verify video is playing
 //        - Scenario C - Streamable is the video source
 //        Expected result: Verify video is played.
-         isPlayed = gamePage.playHighlights();
+        isPlayed = gamePage.playHighlights();
         report.endLevel();
-        AssertUtils.assertTrue(isPlayed, "Play highlights test passed successfully" ,"Play highlights test failed", true);
+        AssertUtils.assertTrue(isPlayed, "Play highlights test passed successfully", "Play highlights test failed", true);
     }
 
 

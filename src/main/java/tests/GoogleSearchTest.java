@@ -5,14 +5,14 @@ import infra.pages.GoogleSearchResultsPage;
 import infra.pages.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.ActionBot;
 import utils.AssertUtils;
 
 
 public class GoogleSearchTest extends BaseTest {
 
-    private GoogleSearchResultsPage resultsPage = null;
-    private HomePage homePage = null;
+    private static GoogleHomePage googleHomePage;
+    private static GoogleSearchResultsPage resultsPage = null;
+    private static HomePage homePage = null;
 
     @Test
     public void verifyShowsInGoogleResults() {
@@ -21,7 +21,7 @@ public class GoogleSearchTest extends BaseTest {
         String siteUrl = "https://ourmatch.net/videos/";
         String siteTitle = "Latest Highlights | OurMatch - Latest Football Highlights";
 
-        GoogleHomePage googleHomePage = new GoogleHomePage(driver);
+        googleHomePage = new GoogleHomePage(driver);
 
         report.startLevel("1. Navigate to google.com");
         googleHomePage.openGoogleHomePage();
@@ -45,7 +45,7 @@ public class GoogleSearchTest extends BaseTest {
 
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
-                ActionBot.isElementDisplayed(HomePage.searchBtn, false),
+                homePage.isElementInPage(),
                 "Ourmatch home page was verified",
                 "Failed to validate ourmatch homepage",
                 true);

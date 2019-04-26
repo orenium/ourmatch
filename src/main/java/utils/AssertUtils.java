@@ -3,7 +3,6 @@ package utils;
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
 import il.co.topq.difido.model.Enums.Status;
-import infra.pages.BasePage;
 import org.testng.Assert;
 
 public class AssertUtils {
@@ -63,21 +62,4 @@ public class AssertUtils {
         }
     }
 
-
-    public static void validatePage(BasePage basePage, String expectedPage) {
-        String actualPageClassName = basePage.getClass().toString();
-        if (actualPageClassName.equals(expectedPage)) {
-            if (actualPageClassName.equals(OURMATH_HOME_PAGE)) {
-                report.log("Our match home page was verified", Status.success);
-            } else if (actualPageClassName.equals(GOAL_OF_THE_MONTH_PAGE)) {
-                report.log("Goal of the month page was verified", Status.success);
-            } else {
-                report.log("Expected Page page was verified", Status.success);
-            }
-            Assert.assertTrue(true);
-        } else {
-            report.log("Unable to verify page", Status.failure);
-            Assert.assertTrue(false);
-        }
-    }
 }

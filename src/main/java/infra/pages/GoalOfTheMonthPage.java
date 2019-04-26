@@ -44,6 +44,7 @@ public class GoalOfTheMonthPage extends BasePage {
         ActionBot.moveToElement(By.cssSelector("div.pre-gotm"));
         ActionBot.clickOnElement(voteBtn, "Vote button");
         isVoted = true;
+        ActionBot.moveToElement(By.cssSelector("div.pds-box-outer"));
 
         return isVoted;
     }

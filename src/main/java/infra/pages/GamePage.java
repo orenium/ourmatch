@@ -28,6 +28,7 @@ public class GamePage extends BasePage {
     private static String author = "";
     private static String email = MainConfig.email;
     private static String commentToPost = MainConfig.comment;
+    public static boolean isMatchSelected = false;
 
 
     public GamePage(WebDriver driver) {
@@ -156,6 +157,7 @@ public class GamePage extends BasePage {
         awayTeam = teams.get(1).getText();
 
         report.log("Match: " + homeTeam + " " + " VS " + awayTeam);
+        isMatchSelected = true;
     }
 
 

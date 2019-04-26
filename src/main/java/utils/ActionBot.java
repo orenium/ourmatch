@@ -112,7 +112,11 @@ public class ActionBot {
      * @param elementLocator - The element By locator
      */
     public static void waitForElementToBeDisplayed(By elementLocator) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+        } catch (org.openqa.selenium.TimeoutException ex) {
+            report.log(ex.getMessage());
+        }
     }
 
     /**

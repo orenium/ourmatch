@@ -7,14 +7,14 @@
         <classes>
             <class name="tests.GoogleSearchTest"/>
             <class name="tests.CloseAcceptCookiesPopupTest"/>
-            <class name="tests.PlayMostViewedTest"/>
-            <class name="tests.LeaveCommentTest"/>
             <class name="tests.LinksValidationTest"/>
             <class name="tests.SearchATeamTest"/>
             <class name="tests.NoSearchResultsTest"/>
+            <class name="tests.playRandomHighLightsTest"/>
             <class name="tests.ToggleMatchScoreTest"/>
             <class name="tests.VoteForGoalOfTheMonthTest"/>
-            <class name="tests.PlayHighlightsTest"/>
+            <class name="tests.PlayMostViewedTest"/>
+            <class name="tests.LeaveCommentTest"/>
             <class name="tests.FollowOnTwitterTest"/>
         </classes>
     </test>

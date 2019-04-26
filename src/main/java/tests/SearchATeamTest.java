@@ -14,14 +14,20 @@ import java.util.ArrayList;
 
 public class SearchATeamTest extends BaseTest {
 
-   private HomePage homePage;
-
+   private static HomePage homePage;
 
     @Test(dataProvider = "csvParamsProvider")
     public void search(String searchTerm) {
         boolean isSearched;
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
         report.endLevel();
 
         report.startLevel("2. At the search area, enter " + searchTerm + " and click the search button");

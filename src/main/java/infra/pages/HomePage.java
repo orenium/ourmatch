@@ -19,7 +19,7 @@ public class HomePage extends BasePage {
     private static final By leaguesTitles = By.cssSelector("li.popular-leagues-list ul li.hover-tp a");
     private static final By leaguesLinks = By.cssSelector("li.popular-leagues-list ul li a");
     private static final By searchInput = By.cssSelector("input.search-text");
-    public static final By searchBtn = By.className("search-submit");
+    private static final By searchBtn = By.className("search-submit");
     private static final By viewsLocator = By.cssSelector("span.views i.count");
 
     private static By videosOnPage;
@@ -42,6 +42,17 @@ public class HomePage extends BasePage {
         report.log("main leagues buttons <--> links hash was set");
     }
 
+    /**
+     * This methods check if the the search button is displayed on page as an indication of page has loaded
+     * @return - True if found, false if not
+     */
+    public boolean isElementInPage(){
+        if (ActionBot.isElementDisplayed(searchBtn, false)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * This method validate the main leagues and the match to their countries
@@ -50,7 +61,6 @@ public class HomePage extends BasePage {
      * @return - True is all match, false if not
      */
     public boolean mainLeaguesLinksValidation(HashMap<String, String> leaguesAndLinks) {
-
 
         List<WebElement> leaguesTitlesList;
         List<WebElement> leaguesLinksList;
@@ -101,6 +111,7 @@ public class HomePage extends BasePage {
 
     /**
      * This method return as error msg
+     *
      * @return - The error msg
      */
     public String getErrorMsg() {
@@ -167,6 +178,7 @@ public class HomePage extends BasePage {
 
     /**
      * This method selects (clicks) on a specific match by given index
+     *
      * @param index - The index number
      * @return - New GamePage
      */

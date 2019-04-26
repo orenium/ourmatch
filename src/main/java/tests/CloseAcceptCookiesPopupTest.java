@@ -6,12 +6,21 @@ import utils.AssertUtils;
 
 public class CloseAcceptCookiesPopupTest extends BaseTest {
 
+    private static HomePage homePage;
+
     @Test
     public void CloseAcceptCookiesPopup() throws InterruptedException {
         boolean isClosed;
 
         report.startLevel("1. Navigate to ourmatch homepage");
-        HomePage homePage = navigateToHomePage();
+        homePage = navigateToHomePage();
+
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
         report.endLevel();
 
         report.startLevel("2. Close (accept) the 'Accept cookies popup'");

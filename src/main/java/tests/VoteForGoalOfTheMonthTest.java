@@ -8,12 +8,20 @@ import utils.AssertUtils;
 
 public class VoteForGoalOfTheMonthTest extends BaseTest {
 
+    private static HomePage homePage;
     private static GoalOfTheMonthPage goalOfTheMonthPage;
+
 
     @Test
     public void vote() {
         report.startLevel("1. Navigate to ourmatch homepage");
-        HomePage homePage = navigateToHomePage();
+        homePage = navigateToHomePage();
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
         report.endLevel();
 
         report.startLevel("2. Navigate to the 'Goal of the month' page");

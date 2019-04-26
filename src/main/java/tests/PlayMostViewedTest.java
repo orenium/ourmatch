@@ -8,8 +8,8 @@ import utils.AssertUtils;
 
 public class PlayMostViewedTest extends BaseTest {
 
-    HomePage homePage;
-    GamePage gamePage;
+    private static HomePage homePage;
+    private static GamePage gamePage;
 
     @Test
     public void playMostViewedTest() throws InterruptedException {
@@ -18,6 +18,12 @@ public class PlayMostViewedTest extends BaseTest {
         boolean isScoreShowed;
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        // Verify ourmatch homepage is shown
+        AssertUtils.assertTrue(
+                homePage.isElementInPage(),
+                "Ourmatch home page was verified",
+                "Failed to validate ourmatch homepage",
+                true);
         report.endLevel();
 
         report.startLevel("2. Track and click on the most viewed match on page");
