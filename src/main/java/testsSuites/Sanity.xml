@@ -19,9 +19,4 @@
         </classes>
     </test>
 
-    <!--<test name="full package tests">-->
-    <!--<packages>-->
-    <!--<package name="tests"></package>-->
-    <!--</packages>-->
-    <!--</test>-->
 </suite>
