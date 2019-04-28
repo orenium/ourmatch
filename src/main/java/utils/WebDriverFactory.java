@@ -20,15 +20,25 @@ public class WebDriverFactory {
         ReportDispatcher report = ReportManager.getInstance();
     }
 
+    private static final String OS = System.getProperty("os.name");
+
     public static WebDriver getDriver(Browsers browser) {
 
         switch (browser) {
             case CHROME:
-                System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/chromedriver");
+                if (OS.equals("Mac OS X")) {
+                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/macOS/chromedriver");
+                } else if (OS.equals("Windows 10")) {
+                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/winOS/chromedriver.exe");
+                }
                 driver = new ChromeDriver();
                 break;
             case FIREFOX:
-                System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/geckodriver");
+                if (OS.equals("Mac OS X")) {
+                    System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/macOS/geckodriver");
+                } else if (OS.equals("Windows 10")) {
+                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/winOS/geckodriver.exe");
+                }
                 driver = new FirefoxDriver();
                 break;
         }
