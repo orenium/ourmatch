@@ -26,8 +26,8 @@ public class GamePage extends BasePage {
     private static String homeTeam;
     private static String awayTeam;
     private static String author = "";
-    private static String email = MainConfig.email;
-    private static String commentToPost = MainConfig.comment;
+    private static final String email = MainConfig.email;
+    private static final String commentToPost = MainConfig.comment;
     public static boolean isMatchSelected = false;
 
 

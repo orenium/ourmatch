@@ -24,7 +24,7 @@ public abstract class BaseTest {
     protected static ReportDispatcher report;
 
     protected static WebDriver driver;
-    protected static String siteUrl = "https://ourmatch.net/videos/";
+    private static final String siteUrl = "https://ourmatch.net/videos/";
 
     public static WebDriver getDriver() {
         return driver;

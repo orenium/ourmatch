@@ -34,7 +34,7 @@ public class ToggleMatchScoreTest extends BaseTest {
 //      Expected result: Verify text is "FT" at the score once clicked
         isScoreShowed = gamePage.toggleMatchScore();
         report.endLevel();
-        AssertUtils.assertTrue(isScoreShowed, "Succesfullfy showing match score", "Failed to show match score", true);
+        AssertUtils.assertTrue(isScoreShowed, "Successfully showing match score", "Failed to show match score", true);
     }
 
     @Test(priority = 2)
