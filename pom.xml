@@ -7,7 +7,6 @@
     <groupId>com.broshi.oren</groupId>
     <artifactId>ourmatch</artifactId>
     <version>1.0</version>
-    @Listeners(il.co.topq.difido.ReportManagerHook.class)
 
     <repositories>
         <repository>
