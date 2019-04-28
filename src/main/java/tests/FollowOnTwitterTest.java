@@ -14,7 +14,7 @@ public class FollowOnTwitterTest extends BaseTest {
     @Test
     public void followOnTwitter() {
 
-        report.startLevel("1. Navigate to ourmatch homepage");
+        report.startLevel("1.Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
