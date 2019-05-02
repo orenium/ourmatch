@@ -16,23 +16,25 @@ public class VoteForGoalOfTheMonthTest extends BaseTest {
     public void vote() {
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        report.endLevel();
+
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
                 homePage.isElementInPage(),
                 "Ourmatch home page was verified",
                 "Failed to validate ourmatch homepage",
                 true);
-        report.endLevel();
 
         report.startLevel("2. Navigate to the 'Goal of the month' page");
         goalOfTheMonthPage = homePage.openGoalOfTheMonthLink();
+        report.endLevel();
+
+        // Verify 'Goal of the month' page is shown
         AssertUtils.assertTrue(
-                ActionBot.isElementDisplayed(GoalOfTheMonthPage.goalLabels, false),
+                ActionBot.isElementDisplayed(GoalOfTheMonthPage.pollMsg, false),
                 "Goal of the month page was verified",
                 "Failed to verify goal of the match page",
                 true);
-//
-        report.endLevel();
 
         report.startLevel("3. Vote (if voting is available)");
 //        The expected results depend on the period of the month:

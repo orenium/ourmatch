@@ -11,7 +11,7 @@ public class OmsPage extends BasePage {
     private static final By notFoundError = By.cssSelector("div#notfound");
 
     private WebDriverWait wait;
-    By iframeLocator = By.tagName("iframe");
+    private By iframeLocator = By.tagName("iframe");
     public static boolean isPlayed = false;
 
 
@@ -45,6 +45,8 @@ public class OmsPage extends BasePage {
                 printErrorMsg();
                 return false;
             }
+        } else {
+            printErrorMsg();
         }
         return isPlayed;
     }

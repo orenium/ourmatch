@@ -1,7 +1,6 @@
 package tests;
 
 import infra.pages.HomePage;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import utils.AssertUtils;
@@ -14,13 +13,14 @@ import java.util.ArrayList;
 
 public class SearchATeamTest extends BaseTest {
 
-   private static HomePage homePage;
+    private static HomePage homePage;
+    private static boolean isSearched;
 
     @Test(dataProvider = "csvParamsProvider")
     public void search(String searchTerm) {
-        boolean isSearched;
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        report.endLevel();
 
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
@@ -28,7 +28,6 @@ public class SearchATeamTest extends BaseTest {
                 "Ourmatch home page was verified",
                 "Failed to validate ourmatch homepage",
                 true);
-        report.endLevel();
 
         report.startLevel("2. At the search area, enter " + searchTerm + " and click the search button");
 //        Search terms:
@@ -39,14 +38,17 @@ public class SearchATeamTest extends BaseTest {
         report.endLevel();
 
         // Verify you can enter a search term
-        Assert.assertTrue(isSearched, " failed to search " + searchTerm);
+        AssertUtils.assertTrue(isSearched, "searching " + searchTerm + " test passed", "Failed to search " + searchTerm, true);
+
+        report.startLevel("3. Check search results");
         if (isSearched) {
             // Verify that for each term, the search term is shown at the URL right after to the "s="
-            AssertUtils.assertTrue(homePage.validateSearchInURL(searchTerm),"'"+ searchTerm+"' was found in url", "Fail to find " + searchTerm + " at the url", true);
+            AssertUtils.assertTrue(homePage.validateSearchInURL(searchTerm), searchTerm + "' was found in url", "Fail to find " + searchTerm + " at the url", true);
 
             // Verify that for each term, the search term is shown at least 3 times at the search results
-            AssertUtils.assertTrue(homePage.validateSearchByResults(searchTerm),searchTerm + " was found at the search results ", "Fail to find " + searchTerm + " at the search results", true);
+            AssertUtils.assertTrue(homePage.validateSearchByResults(searchTerm), searchTerm + " was found at the search results ", "Fail to find " + searchTerm + " at the search results", true);
         }
+        report.endLevel();
     }
 
 

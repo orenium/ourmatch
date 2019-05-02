@@ -18,6 +18,8 @@ public class playRandomHighLightsTest extends BaseTest {
 
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        report.endLevel();
+
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
                 homePage.isElementInPage(),
@@ -25,19 +27,27 @@ public class playRandomHighLightsTest extends BaseTest {
                 "Failed to validate ourmatch homepage",
                 true);
 
-        report.endLevel();
 
         report.startLevel("2. Select a random match");
         gamePage = homePage.selectRandomItem();
-//        gamePage = homePage.selectMatchByIndex(16);
         report.endLevel();
+
+        // Verify a random match is selected
+        AssertUtils.assertTrue(GamePage.isMatchSelected,
+                "A random match was successfully selected",
+                "Failed to select a random match", true);
 
         report.startLevel("3. Click on the 'Click to see the score' button");
         isScoreShowed = gamePage.toggleMatchScore();
-        AssertUtils.assertTrue(isScoreShowed, "Match score shown", "Failed to toggle match Score", true);
         report.endLevel();
 
+        // Verify match score can be shown
+        AssertUtils.assertTrue(isScoreShowed,"Match score is shown", " Failed to show match score", true);
+
         report.startLevel("4. Play highlights");
+        isPlayed = gamePage.playHighlights();
+        report.endLevel();
+
 //        When playing a random match there are 3 possible videou sources
 //        - Scenario A - Youtube is the video source
 //        Expected result:  Verify video is played. In case of an error msg, verify error msg is printed to logs.
@@ -46,8 +56,6 @@ public class playRandomHighLightsTest extends BaseTest {
 //          2. Video source contains 'oms.videostreamlet.net' - Verify video is playing
 //        - Scenario C - Streamable is the video source
 //        Expected result: Verify video is played.
-        isPlayed = gamePage.playHighlights();
-        report.endLevel();
         AssertUtils.assertTrue(isPlayed, "Play highlights test passed successfully", "Play highlights test failed", true);
     }
 

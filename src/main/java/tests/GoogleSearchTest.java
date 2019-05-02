@@ -14,16 +14,15 @@ public class GoogleSearchTest extends BaseTest {
     private static GoogleSearchResultsPage resultsPage = null;
     private static HomePage homePage = null;
 
+    private static final String searchTerm = "ourmatch";
+    private static final String siteUrl = "https://ourmatch.net/videos/";
+    private static final String siteTitle = "Latest Highlights | OurMatch - Latest Football Highlights";
+
     @Test
     public void verifyShowsInGoogleResults() {
 
-        String searchTerm = "ourmatch";
-        String siteUrl = "https://ourmatch.net/videos/";
-        String siteTitle = "Latest Highlights | OurMatch - Latest Football Highlights";
-
-        googleHomePage = new GoogleHomePage(driver);
-
         report.startLevel("1. Navigate to google.com");
+        googleHomePage = new GoogleHomePage(driver);
         googleHomePage.openGoogleHomePage();
         report.endLevel();
 
@@ -42,6 +41,7 @@ public class GoogleSearchTest extends BaseTest {
 
         report.startLevel("3. Click on first link");
         homePage = resultsPage.clickFirstLink();
+        report.endLevel();
 
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
@@ -49,6 +49,5 @@ public class GoogleSearchTest extends BaseTest {
                 "Ourmatch home page was verified",
                 "Failed to validate ourmatch homepage",
                 true);
-        report.endLevel();
     }
 }

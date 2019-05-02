@@ -14,20 +14,23 @@ public class LeaveCommentTest extends BaseTest {
     public void leaveAComment() {
         report.startLevel("1. Navigate to ourmatch homepage");
         homePage = navigateToHomePage();
+        report.endLevel();
+
         // Verify ourmatch homepage is shown
         AssertUtils.assertTrue(
                 homePage.isElementInPage(),
                 "Ourmatch home page was verified",
                 "Failed to validate ourmatch homepage",
                 true);
-        report.endLevel();
 
         report.startLevel("2. Select a random match");
         gamePage = homePage.selectRandomItem();
+        report.endLevel();
+
+        // Verify a random match is selected
         AssertUtils.assertTrue(GamePage.isMatchSelected,
                 "A random match was successfully selected",
                 "Failed to select a random match", true);
-        report.endLevel();
 
         report.startLevel("3. Leave a comment");
         boolean isCommentVerified = gamePage.leaveComment();
