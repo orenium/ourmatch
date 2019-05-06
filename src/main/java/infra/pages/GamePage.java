@@ -213,11 +213,9 @@ public class GamePage extends BasePage {
         boolean isCommentLeft = false;
         try {
             ActionBot.moveToElement(By.cssSelector("#footer"));
-
-            String name = ActionBot.getElementText(commentName);
-            ActionBot.moveToElement(By.cssSelector("footer"));
             List<WebElement> comments = ActionBot.getAllElements(commentContent);
             if (!comments.isEmpty()) {
+                String name = ActionBot.getElementText(commentName);
                 String comment = ActionBot.getElementText(comments.get(1));
                 if (comment.equals(comment) && name.equals(author)) {
                     isCommentLeft = true;
