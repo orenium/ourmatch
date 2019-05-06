@@ -16,7 +16,7 @@ public class GoogleSearchTest extends BaseTest {
 
     private static final String searchTerm = "ourmatch";
     private static final String siteUrl = "https://ourmatch.net/videos/";
-    private static final String siteTitle = "Latest Highlights | OurMatch - Latest Football Highlights";
+    private static final String siteTitle = "Latest Football Highlights";
 
     @Test
     public void verifyShowsInGoogleResults() {
@@ -33,10 +33,14 @@ public class GoogleSearchTest extends BaseTest {
 
         if (resultsPage != null) {
             // Verify that the 1st title is : Latest Highlights | OurMatch - Latest Football Highlights
-            Assert.assertEquals(resultsPage.getFirstTitle(), siteTitle);
+            AssertUtils.assertTrue(resultsPage.getFirstTitle().contains(siteTitle),
+                    "1st title at results was verified","Failed to verify 1st title", true);
 
             // Verify that the 1st URL is: https://ourmatch.net/videos/
-            Assert.assertEquals(resultsPage.getFirstLink(), siteUrl);
+            AssertUtils.assertTrue(resultsPage.getFirstLink().contains(siteUrl),
+                    "1st link at results was verified",
+                    "Failed to verify 1st link",
+                    true);
         }
 
         report.startLevel("3. Click on first link");
