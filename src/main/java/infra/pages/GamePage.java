@@ -213,13 +213,17 @@ public class GamePage extends BasePage {
         boolean isCommentLeft = false;
         try {
             ActionBot.moveToElement(By.cssSelector("#footer"));
-            String name = ActionBot.getElementText(commentName);
 
+            String name = ActionBot.getElementText(commentName);
             ActionBot.moveToElement(By.cssSelector("footer"));
             List<WebElement> comments = ActionBot.getAllElements(commentContent);
-            String comment = ActionBot.getElementText(comments.get(1));
-            if (comment.equals(comment) && name.equals(author)) {
-                isCommentLeft = true;
+            if (!comments.isEmpty()) {
+                String comment = ActionBot.getElementText(comments.get(1));
+                if (comment.equals(comment) && name.equals(author)) {
+                    isCommentLeft = true;
+                }
+            } else {
+                report.log("Unable to find comment", Enums.Status.error);
             }
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             CommentSubmissionFailurePage commentSubmissionFailurePage = new CommentSubmissionFailurePage(driver);
