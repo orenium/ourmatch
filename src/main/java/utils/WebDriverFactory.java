@@ -37,7 +37,7 @@ public class WebDriverFactory {
                 if (OS.equals("Mac OS X")) {
                     System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/macOS/geckodriver");
                 } else if (OS.equals("Windows 10")) {
-                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/winOS/geckodriver.exe");
+                    System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/winOS/geckodriver.exe");
                 }
                 driver = new FirefoxDriver();
                 break;
