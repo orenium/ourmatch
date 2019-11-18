@@ -20,7 +20,7 @@ public class GoalOfTheMonthPage extends BasePage {
     private static final By divTotalVotes = By.cssSelector("div.pds-total-votes");
 
     private static final By iframe = By.tagName("iframe");
-    private static final By voteBtn = By.cssSelector("a#pd-vote-button10289386 span");
+    private static final By voteBtn = By.cssSelector("div.css-box.pds-box span");  // 41
 
     public static boolean isClosedForVoting = false;
 
@@ -42,6 +42,7 @@ public class GoalOfTheMonthPage extends BasePage {
                 "list[" + index + "].click();");
         report.log(ActionBot.getTextFromElementList(goalLabels).get(index) + " was selected");
         ActionBot.moveToElement(By.cssSelector("div.pre-gotm"));
+        ActionBot.moveToElement(voteBtn);
         ActionBot.clickOnElement(voteBtn, "Vote button");
         isVoted = true;
         ActionBot.moveToElement(By.cssSelector("div.pds-box-outer"));

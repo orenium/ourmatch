@@ -60,7 +60,7 @@ public class GamePage extends BasePage {
                 if (omsPage.verifyNewTabWasOpen()) {
                     isPlayed = omsPage.clickPlay();
                 }
-            } else if (videoSrc.contains("oms.videostreamlet.net")) {
+            } else if (videoSrc.contains("oms.vidupstream.com")) {
                 omsPage = playViaOms(false);
                 isPlayed = omsPage.clickPlay();
                 if (ActionBot.isElementDisplayedInIframe(iframe, playBtn)) {

@@ -8,7 +8,7 @@ public class GoogleHomePage extends BasePage {
 
 
     private static final String GOOGLE_HOMEPAGE_URL = "https://www.google.com/";
-    private static final By searchBoxSelector = By.xpath("//*[@id='tsf']/div[2]/div/div[1]/div/div[1]/input");
+    private static final By searchBoxSelector = By.cssSelector("input.gLFyf.gsfi");
 
     public GoogleHomePage(WebDriver driver) {
         super(driver);

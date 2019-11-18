@@ -15,7 +15,7 @@ public class GoogleSearchTest extends BaseTest {
     private static HomePage homePage = null;
 
     private static final String searchTerm = "ourmatch";
-    private static final String siteUrl = "https://ourmatch.net/videos/";
+    private static final String siteUrl = "https://ourmatch.net";
     private static final String siteTitle = "Latest Football Highlights";
 
     @Test

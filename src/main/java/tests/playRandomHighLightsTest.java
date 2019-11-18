@@ -48,7 +48,7 @@ public class playRandomHighLightsTest extends BaseTest {
         isPlayed = gamePage.playHighlights();
         report.endLevel();
 
-//        When playing a random match there are 3 possible videou sources
+//        When playing a random match there are 3 possible video sources
 //        - Scenario A - Youtube is the video source
 //        Expected result:  Verify video is played. In case of an error msg, verify error msg is printed to logs.
 //        - Scenario B - Oms is the video source (2 scenarios):
