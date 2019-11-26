@@ -3,6 +3,7 @@ package utils;
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
 import infra.pages.Browsers;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -26,19 +27,11 @@ public class WebDriverFactory {
 
         switch (browser) {
             case CHROME:
-                if (OS.equals("Mac OS X")) {
-                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/macOS/chromedriver");
-                } else if (OS.equals("Windows 10")) {
-                    System.setProperty("webdriver.chrome.driver", "src/main/resources/webdrivers/winOS/chromedriver.exe");
-                }
+                WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver();
                 break;
             case FIREFOX:
-                if (OS.equals("Mac OS X")) {
-                    System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/macOS/geckodriver");
-                } else if (OS.equals("Windows 10")) {
-                    System.setProperty("webdriver.gecko.driver", "src/main/resources/webdrivers/winOS/geckodriver.exe");
-                }
+                WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver();
                 break;
         }
