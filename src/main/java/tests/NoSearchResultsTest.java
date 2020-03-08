@@ -2,7 +2,7 @@ package tests;
 
 import infra.pages.HomePage;
 import org.testng.annotations.Test;
-import utils.AssertUtils;
+import infra.pages.utils.AssertUtils;
 
 public class NoSearchResultsTest extends BaseTest {
 

@@ -1,4 +1,4 @@
-package utils;
+package infra.pages.utils;
 
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;

@@ -2,7 +2,7 @@ package infra.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.ActionBot;
+import infra.pages.utils.ActionBot;
 
 import java.util.Iterator;
 import java.util.Set;

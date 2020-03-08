@@ -1,4 +1,4 @@
-package utils;
+package infra.pages.utils;
 import infra.pages.Browsers;
 
 import java.io.FileInputStream;

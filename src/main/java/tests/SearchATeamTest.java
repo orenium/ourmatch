@@ -3,7 +3,7 @@ package tests;
 import infra.pages.HomePage;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import utils.AssertUtils;
+import infra.pages.utils.AssertUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

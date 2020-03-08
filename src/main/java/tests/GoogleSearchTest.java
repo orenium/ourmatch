@@ -3,9 +3,8 @@ package tests;
 import infra.pages.GoogleHomePage;
 import infra.pages.GoogleSearchResultsPage;
 import infra.pages.HomePage;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.AssertUtils;
+import infra.pages.utils.AssertUtils;
 
 
 public class GoogleSearchTest extends BaseTest {

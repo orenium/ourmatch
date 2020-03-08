@@ -4,8 +4,8 @@ import il.co.topq.difido.model.Enums;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import utils.ActionBot;
-import utils.MainConfig;
+import infra.pages.utils.ActionBot;
+import infra.pages.utils.MainConfig;
 
 import java.util.List;
 

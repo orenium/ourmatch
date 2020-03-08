@@ -5,7 +5,7 @@ import il.co.topq.difido.ReportManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Listeners;
-import utils.ActionBot;
+import infra.pages.utils.ActionBot;
 
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)

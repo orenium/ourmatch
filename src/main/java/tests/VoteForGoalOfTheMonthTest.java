@@ -3,8 +3,8 @@ package tests;
 import infra.pages.GoalOfTheMonthPage;
 import infra.pages.HomePage;
 import org.testng.annotations.Test;
-import utils.ActionBot;
-import utils.AssertUtils;
+import infra.pages.utils.ActionBot;
+import infra.pages.utils.AssertUtils;
 
 public class VoteForGoalOfTheMonthTest extends BaseTest {
 

@@ -3,7 +3,7 @@ package infra.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.ActionBot;
+import infra.pages.utils.ActionBot;
 
 public class OmsPage extends BasePage {
 

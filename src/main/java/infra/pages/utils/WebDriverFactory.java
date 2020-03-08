@@ -1,4 +1,4 @@
-package utils;
+package infra.pages.utils;
 
 import il.co.topq.difido.ReportDispatcher;
 import il.co.topq.difido.ReportManager;
@@ -10,7 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.concurrent.TimeUnit;
 
-import static utils.MainConfig.webDriverType;
+import static infra.pages.utils.MainConfig.webDriverType;
 
 public class WebDriverFactory {
 
