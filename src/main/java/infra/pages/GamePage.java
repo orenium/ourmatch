@@ -9,6 +9,8 @@ import infra.pages.utils.MainConfig;
 
 import java.util.List;
 
+import static infra.pages.utils.ActionBot.*;
+
 public class GamePage extends BasePage {
 
     private static final By iframe = By.cssSelector("div.embed-code iframe");
@@ -46,15 +48,15 @@ public class GamePage extends BasePage {
     public boolean playHighlights() throws InterruptedException {
         boolean isPlayed = false;
         OmsPage omsPage;
-        ActionBot.moveToElement(embededCodeDiv);
+        moveToElement(embededCodeDiv);
 
-        if (ActionBot.isElementDisplayed(iframe, true)) {
-            String videoSrc = ActionBot.getElementAttribute(iframe, "src");
+        if (isElementDisplayed(iframe, true)) {
+            String videoSrc = getElementAttribute(iframe, "src");
             report.log("Playing match highlights from source: " + videoSrc);
             if (videoSrc.contains("www.youtube.com")) {
                 isPlayed = playViaYoutubePlayer();
             } else if (videoSrc.contains("oms.veuclips.com")) {
-                ActionBot.clickOnElementInIFrame(iframe, By.cssSelector("div.video-thumbnail"), "iframe video-thumbnail");
+                clickOnElementInIFrame(iframe, By.cssSelector("div.video-thumbnail"), "iframe video-thumbnail");
                 omsPage = playViaOms(true);
                 Thread.sleep(2000);
                 if (omsPage.verifyNewTabWasOpen()) {
@@ -63,8 +65,8 @@ public class GamePage extends BasePage {
             } else if (videoSrc.contains("oms.vidupstream.com")) {
                 omsPage = playViaOms(false);
                 isPlayed = omsPage.clickPlay();
-                if (ActionBot.isElementDisplayedInIframe(iframe, playBtn)) {
-                    ActionBot.clickOnElementInIFrame(iframe, playBtn, "Play button");
+                if (isElementDisplayedInIframe(iframe, playBtn)) {
+                    clickOnElementInIFrame(iframe, playBtn, "Play button");
                     isPlayed = true;
                 }
             } else if (videoSrc.contains("streamable.com")) {
@@ -84,12 +86,12 @@ public class GamePage extends BasePage {
      */
     private OmsPage playViaOms(boolean isNewTabOpen) throws InterruptedException {
 
-        if (ActionBot.isElementDisplayed(iframe, true)) {
-            ActionBot.clickOnElement(iframe, "oms iframe");
+        if (isElementDisplayed(iframe, true)) {
+            clickOnElement(iframe, "oms iframe");
         }
         Thread.sleep(2000);
         if (isNewTabOpen) {
-            ActionBot.switchToNewTab();
+            switchToNewTab();
         }
         return new OmsPage(driver);
     }
@@ -103,7 +105,7 @@ public class GamePage extends BasePage {
     private boolean playViaStreamable() {
 
         boolean isPlayed;
-        ActionBot.clickOnElementInIFrame(iframe, streamablePlayBtn, "Play button");
+        clickOnElementInIFrame(iframe, streamablePlayBtn, "Play button");
         isPlayed = true;
         return isPlayed;
     }
@@ -116,12 +118,12 @@ public class GamePage extends BasePage {
     private boolean playViaYoutubePlayer() {
         boolean isPlayingInYoutube = false;
 
-        if (ActionBot.isElementDisplayed(iframe, true)) {
-            ActionBot.clickOnElementInIFrame(iframe, youtubePlayBtn, "Play in Youtube");
+        if (isElementDisplayed(iframe, true)) {
+            clickOnElementInIFrame(iframe, youtubePlayBtn, "Play in Youtube");
             return true;
         }
-        ActionBot.switchToIFrameDriver(iframe);
-        if (ActionBot.isElementDisplayed(youTubeErrorMsg, false)) {
+        switchToIFrameDriver(iframe);
+        if (isElementDisplayed(youTubeErrorMsg, false)) {
             getErrorMsgIfShown();
         }
         return isPlayingInYoutube;
@@ -137,10 +139,10 @@ public class GamePage extends BasePage {
 
         By subReason = By.cssSelector("div.ytp-error-content-wrap-subreason span");
         boolean isShown = false;
-        ActionBot.moveToElementInIFrame(iframe, youTubeErrorMsg);
-        if (ActionBot.isElementDisplayedInIframe(iframe, youTubeErrorMsg)) {
-            report.log("Error: " + ActionBot.getTextFromElementInIFrame(iframe, youTubeErrorMsg));
-            report.log(ActionBot.getTextFromElementInIFrame(iframe, subReason));
+        moveToElementInIFrame(iframe, youTubeErrorMsg);
+        if (isElementDisplayedInIframe(iframe, youTubeErrorMsg)) {
+            report.log("Error: " + getTextFromElementInIFrame(iframe, youTubeErrorMsg));
+            report.log(getTextFromElementInIFrame(iframe, subReason));
             isShown = true;
         }
         return isShown;
@@ -152,7 +154,7 @@ public class GamePage extends BasePage {
      */
     public void getMatchTeams() {
 
-        List<WebElement> teams = ActionBot.getAllElements(matchTeams);
+        List<WebElement> teams = getAllElements(matchTeams);
         homeTeam = teams.get(0).getText();
         awayTeam = teams.get(1).getText();
 
@@ -169,15 +171,15 @@ public class GamePage extends BasePage {
     public boolean toggleMatchScore() {
         boolean isScoreShown = false;
 
-        if (ActionBot.isElementDisplayed(matchScoreBtn, true)) {
-            ActionBot.moveToElement(By.cssSelector("div.score"));
-            ActionBot.clickOnElement(matchScoreBtn, "Toggle match score button");
-            ActionBot.waitForElementToBeDisplayed(spoilerDiv);
-            String vsText = ActionBot.getElementText(spoilerDiv);
+        if (isElementDisplayed(matchScoreBtn, true)) {
+            moveToElement(By.cssSelector("div.score"));
+            clickOnElement(matchScoreBtn, "Toggle match score button");
+            waitForElementToBeDisplayed(spoilerDiv);
+            String vsText = getElementText(spoilerDiv);
             if (vsText.equals("FT")) {
                 isScoreShown = true;
-                report.log("Match score: " + ActionBot.getElementText(By.cssSelector("div.home-score.spoiler")) + " : " + ActionBot.getElementText(By.cssSelector("div.away-score.spoiler")));
-            } else if (ActionBot.getElementText(By.cssSelector("div.vs.spoilerfree")).equals("-")){
+                report.log("Match score: " + getElementText(By.cssSelector("div.home-score.spoiler")) + " : " + getElementText(By.cssSelector("div.away-score.spoiler")));
+            } else if (getElementText(By.cssSelector("div.vs.spoilerfree")).equals("-")){
                 report.log("hiding match score");
             }
         }
@@ -193,11 +195,11 @@ public class GamePage extends BasePage {
     public boolean leaveComment() {
         author = homeTeam.toLowerCase() + " fan";
 
-        ActionBot.moveToElement(By.cssSelector("#footer"));
-        ActionBot.writeToElement(By.cssSelector("form input#author"), author);
-        ActionBot.writeToElement(By.cssSelector("form input#email"), email);
-        ActionBot.writeToElement(By.cssSelector("form textarea#comment"), commentToPost);
-        ActionBot.clickOnElement(By.cssSelector("p input[name='submit']"), "post comment");
+        moveToElement(By.cssSelector("#footer"));
+        writeToElement(By.cssSelector("form input#author"), author);
+        writeToElement(By.cssSelector("form input#email"), email);
+        writeToElement(By.cssSelector("form textarea#comment"), commentToPost);
+        clickOnElement(By.cssSelector("p input[name='submit']"), "post comment");
         report.log("A comment: " + commentToPost + " was posted");
 
         return isCommentLeft();
@@ -212,11 +214,11 @@ public class GamePage extends BasePage {
     private boolean isCommentLeft() {
         boolean isCommentLeft = false;
         try {
-            ActionBot.moveToElement(By.cssSelector("#footer"));
-            List<WebElement> comments = ActionBot.getAllElements(commentContent);
+            moveToElement(By.cssSelector("#footer"));
+            List<WebElement> comments = getAllElements(commentContent);
             if (!comments.isEmpty()) {
-                String name = ActionBot.getElementText(commentName);
-                String comment = ActionBot.getElementText(comments.get(1));
+                String name = getElementText(commentName);
+                String comment = getElementText(comments.get(1));
                 if (comment.equals(comment) && name.equals(author)) {
                     isCommentLeft = true;
                 }

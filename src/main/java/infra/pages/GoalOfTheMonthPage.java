@@ -7,6 +7,8 @@ import infra.pages.utils.ActionBot;
 
 import java.util.List;
 
+import static infra.pages.utils.ActionBot.*;
+
 public class GoalOfTheMonthPage extends BasePage {
 
     private static final By goalOptions = By.cssSelector("span.css-answer-input.pds-answer-input input");
@@ -36,16 +38,16 @@ public class GoalOfTheMonthPage extends BasePage {
     public boolean vote() {
         boolean isVoted;
 
-        int index = ActionBot.getRandomIndex(ActionBot.getTextFromElementList(goalLabels).size());
-        ActionBot.moveToElement(By.cssSelector("div.CSS_Poll.PDS_Poll"));
-        ActionBot.executeJavaScript("var list = document.querySelectorAll('span.css-answer-input.pds-answer-input input');\n" +
+        int index = getRandomIndex(getTextFromElementList(goalLabels).size());
+        moveToElement(By.cssSelector("div.CSS_Poll.PDS_Poll"));
+        executeJavaScript("var list = document.querySelectorAll('span.css-answer-input.pds-answer-input input');\n" +
                 "list[" + index + "].click();");
-        report.log(ActionBot.getTextFromElementList(goalLabels).get(index) + " was selected");
-        ActionBot.moveToElement(By.cssSelector("div.pre-gotm"));
-        ActionBot.moveToElement(voteBtn);
-        ActionBot.clickOnElement(voteBtn, "Vote button");
+        report.log(getTextFromElementList(goalLabels).get(index) + " was selected");
+        moveToElement(By.cssSelector("div.pre-gotm"));
+        moveToElement(voteBtn);
+        clickOnElement(voteBtn, "Vote button");
         isVoted = true;
-        ActionBot.moveToElement(By.cssSelector("div.pds-box-outer"));
+        moveToElement(By.cssSelector("div.pds-box-outer"));
 
         return isVoted;
     }
@@ -57,16 +59,16 @@ public class GoalOfTheMonthPage extends BasePage {
      * @return - True if pool is close, false if not
      */
     public boolean isPollClosed() {
-        if (ActionBot.isElementDisplayed(pollMsg,true)) {
-            String pollMsgText = ActionBot.getElementText(pollMsg);
+        if (isElementDisplayed(pollMsg,true)) {
+            String pollMsgText = getElementText(pollMsg);
             if (!pollMsgText.contains("Poll Closed")) {
                 isClosedForVoting = false;
                 report.log("Poll is available for voting");
             } else {
                 isClosedForVoting = true;
                 report.log("Poll is closed for voting");
-                List<WebElement> iframes = ActionBot.getAllElements(iframe);
-                ActionBot.clickOnElement(iframes.get(5), "iframe");
+                List<WebElement> iframes = getAllElements(iframe);
+                clickOnElement(iframes.get(5), "iframe");
             }
         }
 
@@ -78,17 +80,17 @@ public class GoalOfTheMonthPage extends BasePage {
      */
     public boolean printScoresToLog() {
         boolean isPrintedToLogs = false;
-        if (ActionBot.isElementDisplayed(scoreDiv, true)) {
-            report.log(ActionBot.getElementText(pollMsg));
+        if (isElementDisplayed(scoreDiv, true)) {
+            report.log(getElementText(pollMsg));
             report.log("Results:");
-            List<String> names = ActionBot.getTextFromElementList(spanAnswerText);
-            List<String> per = ActionBot.getTextFromElementList(spanAnswerPer);
-            List<String> votes = ActionBot.getTextFromElementList(spanAnswerVotes);
+            List<String> names = getTextFromElementList(spanAnswerText);
+            List<String> per = getTextFromElementList(spanAnswerPer);
+            List<String> votes = getTextFromElementList(spanAnswerVotes);
             for (int i = 0; i < names.size(); i++) {
                 report.log(names.get(i) + "    " + per.get(i) + "    " + votes.get(i));
             }
             isPrintedToLogs = true;
-            report.log(ActionBot.getElementText(divTotalVotes));
+            report.log(getElementText(divTotalVotes));
         }
         return isPrintedToLogs;
     }

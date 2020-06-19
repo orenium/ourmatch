@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Listeners;
 import infra.pages.utils.ActionBot;
 
+import static infra.pages.utils.ActionBot.*;
+
 
 @Listeners(il.co.topq.difido.ReportManagerHook.class)
 public abstract class BasePage {
@@ -32,18 +34,18 @@ public abstract class BasePage {
         boolean isClosed = false;
 
         try {
-            if (ActionBot.isElementDisplayed(container,true)) {
-                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close button");
+            if (isElementDisplayed(container,true)) {
+                clickOnElement(acceptAndCloseBtn, "accept and close button");
             } else {
-                ActionBot.waitForElementToBeDisplayed(container);
-                ActionBot.clickOnElement(acceptAndCloseBtn, "accept and close button");
+                waitForElementToBeDisplayed(container);
+                clickOnElement(acceptAndCloseBtn, "accept and close button");
             }
         } catch (Exception ex) {
             report.log("Unable to find closeAcceptCookiesDialog: " + ex.getMessage());
         }
 
         Thread.sleep(2000);
-        if (!ActionBot.isElementDisplayed(container,true)) {
+        if (!isElementDisplayed(container,true)) {
             isClosed = true;
         }
         return isClosed;
@@ -57,7 +59,7 @@ public abstract class BasePage {
      */
     public GoalOfTheMonthPage openGoalOfTheMonthLink() {
         By goalOfTheMonthBtn = By.cssSelector("div[id=main-navigation] li a[href='http://ourmatch.net/goal-of-the-month/']");
-        ActionBot.clickOnElement(goalOfTheMonthBtn, "Goal of the month link");
+        clickOnElement(goalOfTheMonthBtn, "Goal of the month link");
         return new GoalOfTheMonthPage(driver);
     }
 

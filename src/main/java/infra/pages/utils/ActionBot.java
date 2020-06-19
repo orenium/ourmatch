@@ -29,7 +29,7 @@ public class ActionBot {
     }
 
     /**
-     * This method receive a url and open a broswer with that given url
+     * This method receive a url and open a browser with that given url
      *
      * @param url - page to open
      */
